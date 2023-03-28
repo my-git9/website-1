@@ -27,6 +27,8 @@ card:
   weight: 10
 -->
 
+{{% katacoda-removal %}}
+
 <!-- overview -->
 
 <!--
