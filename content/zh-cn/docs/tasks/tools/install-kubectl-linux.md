@@ -62,24 +62,38 @@ The following methods exist for installing kubectl on Linux:
 -->
 1. 用以下命令下载最新发行版：
 
-   ```bash
+   {{< tabs name="download_binary_linux" >}}
+   {{< tab name="x86-64" codelang="bash" >}}
    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-   ```
+   {{< /tab >}}
+   {{< tab name="ARM64" codelang="bash" >}}
+   curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/arm64/kubectl"
+   {{< /tab >}}
+   {{< /tabs >}}
 
    {{< note >}}
    <!--
    To download a specific version, replace the `$(curl -L -s https://dl.k8s.io/release/stable.txt)`
    portion of the command with the specific version.
 
-   For example, to download version {{< param "fullversion" >}} on Linux, type:
+   For example, to download version {{< skew currentPatchVersion >}} on Linux x86-64, type:
    -->
    如需下载某个指定的版本，请用指定版本号替换该命令的这一部分：
    `$(curl -L -s https://dl.k8s.io/release/stable.txt)`。
 
-   例如，要在 Linux 中下载 {{< param "fullversion" >}} 版本，请输入：
+   例如，要在 Linux x86-64 中下载 {{< skew currentPatchVersion >}} 版本，请输入：
 
    ```bash
-   curl -LO https://dl.k8s.io/release/{{< param "fullversion" >}}/bin/linux/amd64/kubectl
+   curl -LO https://dl.k8s.io/release/v{{< skew currentPatchVersion >}}/bin/linux/amd64/kubectl
+   ```
+
+   <!--
+   And for Linux ARM64, type:
+   -->
+   对于 Linux ARM64 来说，请输入：
+
+   ```bash
+   curl -LO https://dl.k8s.io/release/{{< param "fullversion" >}}/bin/linux/arm64/kubectl
    ```
    {{< /note >}}
 
@@ -92,9 +106,15 @@ The following methods exist for installing kubectl on Linux:
 
    下载 kubectl 校验和文件：
 
-   ```bash
+   {{< tabs name="download_checksum_linux" >}} 
+   {{< tab name="x86-64" codelang="bash" >}}
    curl -LO "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
-   ```
+   {{< /tab >}}
+   {{< tab name="ARM64" codelang="bash" >}}
+   curl -LO "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/arm64/kubectl.sha256"
+   {{< /tab >}}
+   {{< /tabs >}}
+
 
    <!--
    Validate the kubectl binary against the checksum file:
@@ -180,7 +200,11 @@ Or use this for detailed view of version:
    你可以忽略这个警告。你只检查你所安装的 `kubectl` 的版本。
    {{< /note >}}
 
+   <!--
+   Or use this for detailed view of version:
+   -->
    或者使用如下命令来查看版本的详细信息：
+
    ```cmd
    kubectl version --client --output=yaml
    ```
@@ -355,9 +379,15 @@ kubectl 为 Bash、Zsh、Fish 和 PowerShell 提供自动补全功能，可以�
 -->
 1. 用以下命令下载最新发行版：
 
-   ```bash
+   {{< tabs name="download_binary_linux" >}}
+   {{< tab name="x86-64" codelang="bash" >}}
    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl-convert"
-   ```
+   {{< /tab >}}
+   {{< tab name="ARM64" codelang="bash" >}}
+   curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/arm64/kubectl"
+   {{< /tab >}}
+   {{< /tabs >}}
+
 <!--
 1. Validate the binary (optional)
 
@@ -367,9 +397,14 @@ kubectl 为 Bash、Zsh、Fish 和 PowerShell 提供自动补全功能，可以�
 
    下载 kubectl-convert 校验和文件：
 
-   ```bash
+   {{< tabs name="download_convert_checksum_linux" >}}
+   {{< tab name="x86-64" codelang="bash" >}}
    curl -LO "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl-convert.sha256"
-   ```
+   {{< /tab >}}
+   {{< tab name="ARM64" codelang="bash" >}}
+   curl -LO "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/arm64/kubectl-convert.sha256"
+   {{< /tab >}}
+   {{< /tabs >}}
 
    <!--
    Validate the kubectl-convert binary against the checksum file:
