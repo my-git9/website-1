@@ -178,7 +178,7 @@ implementation, and review of this feature and helped move it from alpha, beta, 
 * Jing Xu ([jingxu97](https://github.com/jingxu97))
 * Xing Yang ([xing-yang](https://github.com/xing-yang))
 
-<!
+<!--
 This feature is a collaboration between SIG Storage and SIG Node.
 For those interested in getting involved with the design and development of any
 part of the Kubernetes Storage system, join the Kubernetes Storage Special
