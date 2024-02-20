@@ -321,7 +321,7 @@ to the `resources` array with `events` as the resource name, followed by the pro
 The new item should look like this:
 -->
 如果启用了通配符，但想要针对特定资源退出加密，则可以通过添加带有资源名称的新 `resources` 数组项，
-后跟附带 `identity` 提供商的 `providers` 数组项。例如，如果启用了 “`*.*`”，
+后跟附带 `identity` 提供程序的 `providers` 数组项。例如，如果启用了 “`*.*`”，
 但想要排除对 `events` 资源的加密，则应向 `resources` 数组添加一个新项（以 `events` 为资源名称），
 后跟包含 `identity` 的提供程序数组。新项应如下所示：
 
@@ -604,7 +604,7 @@ Even when you rely on a provider to manage the use and lifecycle of the main enc
 for making sure that access controls and other security measures for the managed encryption service are
 appropriate for your security needs.
 -->
-即使你依赖提供商来管理主加密密钥（或多个密钥）的使用和生命周期，
+即使你依赖提供程序来管理主加密密钥（或多个密钥）的使用和生命周期，
 你仍然有责任确保托管加密服务的访问控制和其他安全措施满足你的安全需求。
 
 <!--
