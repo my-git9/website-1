@@ -9,11 +9,11 @@ Install required addons for passing conformance tests
 ### 概要
 
 <!--
-This command is not meant to be run on its own. See list of available subcommands.
+Install required addons for passing conformance tests
 -->
-此命令并非设计用来单独运行。请参阅可用子命令列表。
+安装必要的插件以通过一致性测试。
 
-```
+```shell
 kubeadm init phase addon [flags]
 ```
 
@@ -22,7 +22,7 @@ kubeadm init phase addon [flags]
 -->
 ### 选项
 
-   <table style="width: 100%; table-layout: fixed;">
+<table style="width: 100%; table-layout: fixed;">
 <colgroup>
 <col span="1" style="width: 10px;" />
 <col span="1" />
@@ -51,7 +51,7 @@ addon 操作的帮助命令。
 -->
 ### 继承于父命令的选项
 
-   <table style="width: 100%; table-layout: fixed;">
+<table style="width: 100%; table-layout: fixed;">
 <colgroup>
 <col span="1" style="width: 10px;" />
 <col span="1" />

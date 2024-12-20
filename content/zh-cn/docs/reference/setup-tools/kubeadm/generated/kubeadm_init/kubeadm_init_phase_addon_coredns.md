@@ -14,7 +14,7 @@ Install the CoreDNS addon components via the API server. Please note that althou
 通过 API 服务器安装 CoreDNS 附加组件。请注意，即使 DNS 服务器已部署，在安装 CNI
 之前 DNS 服务器不会被调度执行。
 
-```
+```shell
 kubeadm init phase addon coredns [flags]
 ```
 
@@ -23,7 +23,7 @@ kubeadm init phase addon coredns [flags]
 -->
 ### 选项
 
-   <table style="width: 100%; table-layout: fixed;">
+<table style="width: 100%; table-layout: fixed;">
 <colgroup>
 <col span="1" style="width: 10px;" />
 <col span="1" />
@@ -66,18 +66,18 @@ Don't apply any changes; just output what would be done.
 <p>
 <!--
 A set of key=value pairs that describe feature gates for various features. Options are:<br/>
-EtcdLearnerMode=true|false (BETA - default=true)<br/>
+EtcdLearnerMode=true|false (default=true)<br/>
+NodeLocalCRISocket=true|false (ALPHA - default=false)<br/>
 PublicKeysECDSA=true|false (DEPRECATED - default=false)<br/>
 RootlessControlPlane=true|false (ALPHA - default=false)<br/>
-UpgradeAddonsBeforeControlPlane=true|false (DEPRECATED - default=false)<br/>
 WaitForAllControlPlaneComponents=true|false (ALPHA - default=false)
 -->
 一组用来描述各种特性门控的键值对（key=value）。选项是：<br/>
-EtcdLearnerMode=true|false (BETA - 默认值=true)<br/>
-PublicKeysECDSA=true|false (DEPRECATED - 默认值=false)<br/>
-RootlessControlPlane=true|false (ALPHA - 默认值=false)<br/>
-UpgradeAddonsBeforeControlPlane=true|false (DEPRECATED - 默认值=false)<br/>
-WaitForAllControlPlaneComponents=true|false (ALPHA - 默认值=false)
+EtcdLearnerMode=true|false（默认值=true）<br/>
+NodeLocalCRISocket=true|false（ALPHA - 默认值=false）<br/>
+PublicKeysECDSA=true|false（DEPRECATED - 默认值=false）<br/>
+RootlessControlPlane=true|false（ALPHA - 默认值=false）<br/>
+WaitForAllControlPlaneComponents=true|false（ALPHA - 默认值=false）
 </p>
 </td>
 </tr>
@@ -212,7 +212,7 @@ Use alternative domain for services, e.g. &quot;myorg.internal&quot;.
 -->
 ### 继承于父命令的选项
 
-   <table style="width: 100%; table-layout: fixed;">
+<table style="width: 100%; table-layout: fixed;">
 <colgroup>
 <col span="1" style="width: 10px;" />
 <col span="1" />
