@@ -32,7 +32,8 @@ Kubernetes.
 <!--
 Service issues exist for pod CNI network setup and tear down in containerd
 v1.6.0-v1.6.3 when the CNI plugins have not been upgraded and/or the CNI config
-version is not declared in the CNI config files. The containerd team reports, "these issues are resolved in containerd v1.6.4."
+version is not declared in the CNI config files. The containerd team reports,
+"these issues are resolved in containerd v1.6.4."
 
 With containerd v1.6.0-v1.6.3, if you do not upgrade the CNI plugins and/or
 declare the CNI config version, you might encounter the following "Incompatible
@@ -123,26 +124,25 @@ Here's an overview of the typical steps for each node:
 以下是针对各节点要执行的典型步骤的概述：
 
 <!--
-1. [Safely drain and cordon the
-node](/docs/tasks/administer-cluster/safely-drain-node/).
+1. [Safely drain and cordon the node](/docs/tasks/administer-cluster/safely-drain-node/).
 -->
 
 1. [安全地腾空并隔离节点](/zh-cn/docs/tasks/administer-cluster/safely-drain-node/)。
 
 <!--
 2. After stopping your container runtime and kubelet services, perform the
-following upgrade operations:
-  - If you're running CNI plugins, upgrade them to the latest version.
-  - If you're using non-CNI plugins, replace them with CNI plugins. Use the
-  latest version of the plugins.
-  - Update the plugin configuration file to specify or match a version of the
-  CNI specification that the plugin supports, as shown in the following ["An
-  example containerd configuration
-  file"](#an-example-containerd-configuration-file) section.
-  - For `containerd`, ensure that you have installed the latest version (v1.0.0
-  or later) of the CNI loopback plugin.
-  - Upgrade node components (for example, the kubelet) to Kubernetes v1.24
-  - Upgrade to or install the most current version of the container runtime.
+   following upgrade operations:
+
+   - If you're running CNI plugins, upgrade them to the latest version.
+   - If you're using non-CNI plugins, replace them with CNI plugins. Use the
+     latest version of the plugins.
+   - Update the plugin configuration file to specify or match a version of the
+     CNI specification that the plugin supports, as shown in the following
+     ["An example containerd configuration file"](#an-example-containerd-configuration-file) section.
+   - For `containerd`, ensure that you have installed the latest version (v1.0.0 or later)
+     of the CNI loopback plugin.
+   - Upgrade node components (for example, the kubelet) to Kubernetes v1.24
+   - Upgrade to or install the most current version of the container runtime.
 -->
 
 2. 停止容器运行时和 kubelet 服务后，执行以下升级操作：
@@ -156,7 +156,7 @@ following upgrade operations:
 
 <!--
 3. Bring the node back into your cluster by restarting your container runtime
-and kubelet. Uncordon the node (`kubectl uncordon <nodename>`).
+   and kubelet. Uncordon the node (`kubectl uncordon <nodename>`).
 -->
 
 3. 通过重新启动容器运行时和 kubelet 将节点重新加入到集群。取消节点隔离（`kubectl uncordon <nodename>`）。
