@@ -6,7 +6,7 @@ api_metadata:
 content_type: "api_reference"
 description: "ResourceSlice 表示一个或多个资源，这些资源位于同一个驱动所管理的、彼此相似的资源构成的资源池。"
 title: "ResourceSlice v1beta1"
-weight: 18
+weight: 17
 ---
 <!--
 api_metadata:
@@ -16,12 +16,19 @@ api_metadata:
 content_type: "api_reference"
 description: "ResourceSlice represents one or more resources in a pool of similar resources, managed by a common driver."
 title: "ResourceSlice v1beta1"
-weight: 18
+weight: 17
 auto_generated: true
 -->
 
 <!--
-The file was copied and updated manually from the v1alpha3 API.
+The file is auto-generated from the Go source code of the component using a generic
+[generator](https://github.com/kubernetes-sigs/reference-docs/). To learn how
+to generate the reference documentation, please read
+[Contributing to the reference documentation](/docs/contribute/generate-ref-docs/).
+To update the reference content, please follow the 
+[Contributing upstream](/docs/contribute/generate-ref-docs/contribute-upstream/)
+guide. You can file document formatting bugs against the
+[reference-docs](https://github.com/kubernetes-sigs/reference-docs/) project.
 -->
 
 `apiVersion: resource.k8s.io/v1beta1`
@@ -294,18 +301,35 @@ ResourceSliceSpec 包含驱动在一个 ResourceSlice 中所发布的信息。
         version 字段值是符合 semver.org 2.0.0 规范的语义版本。不得超过 64 个字符。
 
     <!--
-    - **devices.basic.capacity** (map[string]<a href="{{< ref "../common-definitions/quantity#Quantity" >}}">Quantity</a>)
+    - **devices.basic.capacity** (map[string]DeviceCapacity)
 
       Capacity defines the set of capacities for this device. The name of each capacity must be unique in that set.
       
       The maximum number of attributes and capacities combined is 32.
     -->
 
-    - **devices.basic.capacity** (map[string]<a href="{{< ref "../common-definitions/quantity#Quantity" >}}">Quantity</a>)
+    - **devices.basic.capacity** (map[string]DeviceCapacity)
 
       capacity 定义设备的容量集。在该集合中每个容量的名称必须唯一。
       
       attributes 和 capacities 两个映射合起来，最多包含 32 个属性。
+
+      <!--
+      <a name="DeviceCapacity"></a>
+      *DeviceCapacity describes a quantity associated with a device.*
+
+      - **devices.basic.capacity.value** (<a href="{{< ref "../common-definitions/quantity#Quantity" >}}">Quantity</a>), required
+
+        Value defines how much of a certain device capacity is available.
+      -->
+  
+    <a name="DeviceCapacity"></a>
+
+    **DeviceCapacity 描述了与设备相关的数量。**
+
+    - **devices.basic.capacity.value** (<a href="{{< ref "../common-definitions/quantity#Quantity" >}}">Quantity</a>)，必需
+
+      Value 定义了多少特定设备容量是可用的。
 
 <!--
 - **nodeName** (string)
@@ -410,21 +434,21 @@ ResourceSliceList 是 ResourceSlice 的集合。
 - **kind**: ResourceSliceList
 
 <!--
-- **items** ([]<a href="{{< ref "../workload-resources/resource-slice-v1beta1#ResourceSlice" >}}">ResourceSlice</a>), required
-
-  Items is the list of resource ResourceSlices.
-
 - **metadata** (<a href="{{< ref "../common-definitions/list-meta#ListMeta" >}}">ListMeta</a>)
 
   Standard list metadata
+
+- **items** ([]<a href="{{< ref "../workload-resources/resource-slice-v1beta1#ResourceSlice" >}}">ResourceSlice</a>), required
+
+  Items is the list of resource ResourceSlices.
 -->
-- **items** ([]<a href="{{< ref "../workload-resources/resource-slice-v1beta1#ResourceSlice" >}}">ResourceSlice</a>)，必需
-
-  items 是 ResourceSlice 资源的列表。
-
 - **metadata** (<a href="{{< ref "../common-definitions/list-meta#ListMeta" >}}">ListMeta</a>)
 
   标准的列表元数据。
+
+- **items** ([]<a href="{{< ref "../workload-resources/resource-slice-v1beta1#ResourceSlice" >}}">ResourceSlice</a>)，必需
+
+  items 是 ResourceSlice 资源的列表。
 
 <!--
 ## Operations {#Operations}
@@ -826,6 +850,23 @@ DELETE /apis/resource.k8s.io/v1beta1/resourceslices/{name}
 - **dryRun** (*in query*): string
 
   <a href="{{< ref "../common-parameters/common-parameters#dryRun" >}}">dryRun</a>
+-->
+#### 参数
+
+- **name** (**路径参数**): string，必需
+
+  ResourceSlice 的名称。
+
+- **body**: <a href="{{< ref "../common-definitions/delete-options#DeleteOptions" >}}">DeleteOptions</a>
+
+- **dryRun** (**查询参数**): string
+
+  <a href="{{< ref "../common-parameters/common-parameters#dryRun" >}}">dryRun</a>
+
+<!--
+- **ignoreStoreReadErrorWithClusterBreakingPotential** (*in query*): boolean
+
+  <a href="{{< ref "../common-parameters/common-parameters#ignoreStoreReadErrorWithClusterBreakingPotential" >}}">ignoreStoreReadErrorWithClusterBreakingPotential</a>
 
 - **gracePeriodSeconds** (*in query*): integer
 
@@ -839,17 +880,9 @@ DELETE /apis/resource.k8s.io/v1beta1/resourceslices/{name}
 
   <a href="{{< ref "../common-parameters/common-parameters#propagationPolicy" >}}">propagationPolicy</a>
 -->
-#### 参数
+- **ignoreStoreReadErrorWithClusterBreakingPotential** (**查询参数**): boolean
 
-- **name** (**路径参数**): string，必需
-
-  ResourceSlice 的名称。
-
-- **body**: <a href="{{< ref "../common-definitions/delete-options#DeleteOptions" >}}">DeleteOptions</a>
-
-- **dryRun** (**查询参数**): string
-
-  <a href="{{< ref "../common-parameters/common-parameters#dryRun" >}}">dryRun</a>
+  <a href="{{< ref "../common-parameters/common-parameters#ignoreStoreReadErrorWithClusterBreakingPotential" >}}">ignoreStoreReadErrorWithClusterBreakingPotential</a>
 
 - **gracePeriodSeconds** (**查询参数**): integer
 
@@ -906,6 +939,10 @@ DELETE /apis/resource.k8s.io/v1beta1/resourceslices
 
   <a href="{{< ref "../common-parameters/common-parameters#gracePeriodSeconds" >}}">gracePeriodSeconds</a>
 
+- **ignoreStoreReadErrorWithClusterBreakingPotential** (*in query*): boolean
+
+  <a href="{{< ref "../common-parameters/common-parameters#ignoreStoreReadErrorWithClusterBreakingPotential" >}}">ignoreStoreReadErrorWithClusterBreakingPotential</a>
+
 - **labelSelector** (*in query*): string
 
   <a href="{{< ref "../common-parameters/common-parameters#labelSelector" >}}">labelSelector</a>
@@ -957,6 +994,10 @@ DELETE /apis/resource.k8s.io/v1beta1/resourceslices
 - **gracePeriodSeconds** (**查询参数**): integer
 
   <a href="{{< ref "../common-parameters/common-parameters#gracePeriodSeconds" >}}">gracePeriodSeconds</a>
+
+- **ignoreStoreReadErrorWithClusterBreakingPotential** (**查询参数**): boolean
+
+  <a href="{{< ref "../common-parameters/common-parameters#ignoreStoreReadErrorWithClusterBreakingPotential" >}}">ignoreStoreReadErrorWithClusterBreakingPotential</a>
 
 - **labelSelector** (**查询参数**): string
 
