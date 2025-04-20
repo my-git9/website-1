@@ -126,6 +126,25 @@ The duration in seconds before the object should be deleted. Value must be non-n
 
 <hr>
 
+<!--
+if set to true, it will trigger an unsafe deletion of the resource in case the normal deletion flow fails with a corrupt object error. A resource is considered corrupt if it can not be retrieved from the underlying storage successfully because of a) its data can not be transformed e.g. decryption failure, or b) it fails to decode into an object. NOTE: unsafe deletion ignores finalizer constraints, skips precondition checks, and removes the object from the storage. WARNING: This may potentially break the cluster if the workload associated with the resource being unsafe-deleted relies on normal deletion flow. Use only if you REALLY know what you are doing. The default value is false, and the user must opt in to enable it
+-->
+## ignoreStoreReadErrorWithClusterBreakingPotential {#ignoreStoreReadErrorWithClusterBreakingPotential}
+
+如果设置为 true，那么在正常的删除流程因对象损坏错误而失败时，将触发对该资源的不安全删除。
+当由于以下原因无法从底层存储成功检索到资源时，此资源被视为损坏：
+
+1. 其数据无法被转换，例如解密失败；或
+2. 它无法解码为一个对象。
+
+注意：如果不安全地删除忽略终结器约束，将会跳过前提条件检查，并从存储中移除对象。
+
+警告：如果与正在被不安全删除的资源相关联的工作负载依赖于正常的删除流程，
+这可能会破坏集群。仅当你真的知道自己在做什么时才使用。
+默认值是 false，用户必须选择启用它。
+
+<hr>
+
 ## labelSelector {#labelSelector}
 
 <!--
