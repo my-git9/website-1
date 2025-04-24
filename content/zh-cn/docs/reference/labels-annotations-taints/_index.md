@@ -2638,6 +2638,40 @@ that the auto-generated Secret has not been used for a specified duration
 Secret 在指定时间段内（默认是一年）未被使用的日期（ISO 8601 格式，UTC 时区）。
 
 <!--
+### endpoints.kubernetes.io/managed-by (deprecated) {#endpoints-kubernetes-io-managed-by}
+
+Type: Label
+
+Example: `endpoints.kubernetes.io/managed-by: endpoint-controller`
+
+Used on: Endpoints
+
+This label is used internally to mark Endpoints objects that were created by
+Kubernetes (as opposed to Endpoints created by users or external controllers).
+-->
+### endpoints.kubernetes.io/managed-by（已弃用）   {#endpoints-kubernetes-io-managed-by}
+
+类别：标签
+
+示例：`endpoints.kubernetes.io/managed-by: endpoint-controller`
+
+用于：Endpoints
+
+此标签用于内部标记由 Kubernetes 创建的 Endpoints
+对象（与由用户或外部控制器创建的 Endpoints 不同）。
+
+{{< note >}}
+<!--
+The [Endpoints](/docs/reference/kubernetes-api/service-resources/endpoints-v1/)
+API is deprecated in favor of
+[EndpointSlice](/docs/reference/kubernetes-api/service-resources/endpoint-slice-v1/).
+-->
+[Endpoints](/zh-cn/docs/reference/kubernetes-api/service-resources/endpoints-v1/) API
+已被 [EndpointSlice](/zh-cn/docs/reference/kubernetes-api/service-resources/endpoint-slice-v1/)
+替代。
+{{< /note >}}
+
+<!--
 ### endpointslice.kubernetes.io/managed-by {#endpointslicekubernetesiomanaged-by}
 
 Type: Label
@@ -2648,7 +2682,9 @@ Used on: EndpointSlices
 
 The label is used to indicate the controller or entity that manages the EndpointSlice. This label
 aims to enable different EndpointSlice objects to be managed by different controllers or entities
-within the same cluster.
+within the same cluster. The value `endpointslice-controller.k8s.io` indicates an
+EndpointSlice object that was created automatically by Kubernetes for a Service with a
+{{< glossary_tooltip text="selectors" term_id="selector" >}}.
 -->
 ### endpointslice.kubernetes.io/managed-by {#endpointslicekubernetesiomanaged-by}
 
@@ -2660,6 +2696,9 @@ within the same cluster.
 
 用于标示管理 EndpointSlice 的控制器或实体。该标签旨在使不同的 EndpointSlice
 对象能够由同一集群内的不同控制器或实体管理。
+`endpointslice-controller.k8s.io` 的值表示 Kubernetes
+为带有{{< glossary_tooltip text="选择器" term_id="selector" >}}的 Service
+自动创建的 EndpointSlice 对象。
 
 <!--
 ### endpointslice.kubernetes.io/skip-mirror {#endpointslicekubernetesioskip-mirror}
@@ -4375,7 +4414,7 @@ Kubernetes v1.27 及更高版本不直接设置或读取此注解。然而，AWS
 `service.beta.kubernetes.io/aws-load-balancer-security-groups` 注解。
 {{< /note >}}
 
-### service.beta.kubernetes.io/load-balancer-source-ranges (deprecated) {#service-beta-kubernetes-io-load-balancer-source-ranges}
+### service.beta.kubernetes.io/load-balancer-source-ranges（已弃用） {#service-beta-kubernetes-io-load-balancer-source-ranges}
 
 <!--
 Example: `service.beta.kubernetes.io/load-balancer-source-ranges: "192.0.2.0/25"`
@@ -4675,7 +4714,7 @@ for more information.
 
 用于：Namespace
 
-值**必须**是与 [Pod 安全标准](/zh-cn/docs/concepts/security/pod-security-standards) 级别相对应的
+值**必须**是与 [Pod 安全标准](/zh-cn/docs/concepts/security/pod-security-standards)级别相对应的
 `privileged`、`baseline` 或 `restricted` 之一。
 具体来说，`audit` 标签不会阻止在带标签的 Namespace 中创建不符合指示级别要求的 Pod，
 但会向该 Pod 添加审计注解。
@@ -4855,7 +4894,7 @@ Kubernetes before v1.25 allowed you to configure seccomp behavior using this ann
 See [Restrict a Container's Syscalls with seccomp](/docs/tutorials/security/seccomp/) to
 learn the supported way to specify seccomp restrictions for a Pod.
 -->
-### seccomp.security.alpha.kubernetes.io/pod (非功能性) {#seccomp-security-alpha-kubernetes-io-pod}
+### seccomp.security.alpha.kubernetes.io/pod（非功能性） {#seccomp-security-alpha-kubernetes-io-pod}
 
 类别：注解
 
@@ -4876,7 +4915,7 @@ Kubernetes before v1.25 allowed you to configure seccomp behavior using this ann
 See [Restrict a Container's Syscalls with seccomp](/docs/tutorials/security/seccomp/) to
 learn the supported way to specify seccomp restrictions for a Pod.
 -->
-### container.seccomp.security.alpha.kubernetes.io/[NAME] (非功能性) {#container-seccomp-security-alpha-kubernetes-io}
+### container.seccomp.security.alpha.kubernetes.io/[NAME]（非功能性） {#container-seccomp-security-alpha-kubernetes-io}
 
 类别：注解
 
@@ -5279,7 +5318,7 @@ Annotation that kubeadm places on ConfigMaps that it manages for configuring com
 It contains a hash (SHA-256) used to determine if the user has applied settings different
 from the kubeadm defaults for a particular component.
 -->
-kubeadm 为它所管理的 ConfigMaps 设置的注解，用于配置组件。它包含一个哈希（SHA-256）值，
+kubeadm 为它所管理的 ConfigMap 设置的注解，用于配置组件。它包含一个哈希（SHA-256）值，
 用于确定用户是否应用了不同于特定组件的 kubeadm 默认设置的设置。
 
 <!--
@@ -5409,3 +5448,39 @@ taint. kubeadm no longer sets or uses this deprecated taint.
 kubeadm 先前应用在控制平面节点上的污点，仅允许在其上调度关键工作负载。
 替换为 [`node-role.kubernetes.io/control-plane`](#node-role-kubernetes-io-control-plane-taint)；
 kubeadm 不再设置或使用这个废弃的污点。
+
+<!--
+### resource.k8s.io/admin-access {resource-k8s-io-admin-access}
+
+Type: Label
+
+Example: `resource.k8s.io/admin-access: "true"`
+
+Used on: Namespace
+-->
+### resource.k8s.io/admin-access {resource-k8s-io-admin-access}
+
+类型：标签
+
+示例：`resource.k8s.io/admin-access: "true"`
+
+用于：Namespace
+
+<!--
+Used to grant administrative access to certain resource.k8s.io API types within
+a namespace. When this label is set on a namespace with the value `"true"`
+(case-sensitive), it allows the use of `adminAccess: true` in any namespaced
+`resource.k8s.io` API types. Currently, this permission applies to
+`ResourceClaim` and `ResourceClaimTemplate` objects.
+
+See [Dynamic Resource Allocation Admin access](/docs/concepts/scheduling-eviction/dynamic-resource-allocation/#enabling-admin-access)
+for more information.
+-->
+用于授予在命名空间内对某些 resource.k8s.io API 类型的管理访问权限。
+当在此命名空间上设置此标签且值为 `"true"`（区分大小写）时，
+它允许在任何命名空间的 resource.k8s.io API 类型中使用
+`adminAccess: true`。当前，此权限适用于 `ResourceClaim` 和
+`ResourceClaimTemplate` 对象。
+
+更多信息，请参见
+[动态资源分配管理访问](/zh-cn/docs/concepts/scheduling-eviction/dynamic-resource-allocation/#enabling-admin-access)。
