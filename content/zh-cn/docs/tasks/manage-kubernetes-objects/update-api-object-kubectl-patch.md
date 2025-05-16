@@ -79,7 +79,8 @@ get terminated and replaced by new ones.
 At this point, each Pod has one Container that runs the nginx image. Now suppose
 you want each Pod to have two containers: one that runs nginx and one that runs redis.
 -->
-此时，每个 Pod 都有一个运行 nginx 镜像的容器。现在假设你希望每个 Pod 有两个容器：一个运行 nginx，另一个运行 redis。
+此时，每个 Pod 都有一个运行 nginx 镜像的容器。现在假设你希望每个 Pod 有两个容器：
+一个运行 nginx，另一个运行 redis。
 
 <!--
 Create a file named `patch-file.yaml` that has this content:
@@ -98,7 +99,7 @@ spec:
 <!--
 Patch your Deployment:
 -->
-修补你的 Deployment：
+patch 你的 Deployment：
 
 ```shell
 kubectl patch deployment patch-demo --patch-file patch-file.yaml
@@ -106,7 +107,7 @@ kubectl patch deployment patch-demo --patch-file patch-file.yaml
 <!--
 View the patched Deployment:
 -->
-查看修补后的 Deployment：
+查看 patch 后的 Deployment：
 
 ```shell
 kubectl get deployment patch-demo --output yaml
@@ -263,7 +264,7 @@ kubectl patch deployment patch-demo --patch-file patch-file-tolerations.yaml
 <!--
 View the patched Deployment:
 -->
-查看修补后的 Deployment：
+查看 patch 后的 Deployment：
 
 ```shell
 kubectl get deployment patch-demo --output yaml
@@ -369,7 +370,7 @@ kubectl patch deployment patch-demo --type merge --patch-file patch-file-2.yaml
 <!--
 View the patched Deployment:
 -->
-查看修补后的 Deployment：
+查看 patch 后的 Deployment：
 
 ```shell
 kubectl get deployment patch-demo --output yaml
@@ -403,7 +404,8 @@ kubectl get pods
 In the output, you can see that the existing Pods were terminated, and new Pods
 were created. The `1/1` indicates that each new Pod is running only one Container.
 -->
-在输出中，你可以看到已经终止了现有的 Pod，并创建了新的 Pod。`1/1` 表示每个新 Pod 只运行一个容器。
+在输出中，你可以看到已经终止了现有的 Pod，并创建了新的 Pod。
+`1/1` 表示每个新 Pod 只运行一个容器。
 
 ```shell
 NAME                          READY     STATUS    RESTARTS   AGE
@@ -447,7 +449,7 @@ spec:
 <!--
 Patch your Deployment:
 -->
-修补你的 Deployment:
+对你的 Deployment 进行 patch 操作：
 
 ```shell
 kubectl patch deployment retainkeys-demo --type strategic --patch-file patch-file-no-retainkeys.yaml
@@ -529,7 +531,7 @@ The patch you did in the preceding exercise is called a *strategic merge patch w
 -->
 ### 关于使用 retainKeys 策略的策略合并 patch 操作的说明    {#notes-on-the-strategic-merge-patch-using-the-retainkeys-strategy}
 
-在前文练习中所执行的称作 **带 `retainKeys` 策略的策略合并 patch（Strategic Merge
+在前文练习中所执行的称作**带 `retainKeys` 策略的策略合并 patch（Strategic Merge
 Patch with retainKeys Strategy）**。
 这种方法引入了一种新的 `$retainKey` 指令，具有如下策略：
 
@@ -633,23 +635,25 @@ kubectl patch deployment patch-demo --patch '{"spec": {"template": {"spec": {"co
 -->
 ### 使用 `kubectl patch` 和 `--subresource` 更新一个对象的副本数   {#scale-kubectl-patch}
 
-{{< feature-state for_k8s_version="v1.24" state="alpha" >}}
-
 <!--
 The flag `--subresource=[subresource-name]` is used with kubectl commands like get, patch,
-edit and replace to fetch and update `status` and `scale` subresources of the resources
-(applicable for kubectl version v1.24 or more). This flag is used with all the API resources
-(built-in and CRs) that have `status` or `scale` subresource. Deployment is one of the
-examples which supports these subresources.
+edit, apply and replace to fetch and update `status`, `scale` and `resize` subresource of the
+resources you specify. You can specify a subresource for any of the Kubernetes API resources
+(built-in and CRs) that have `status`, `scale` or `resize` subresource.
+
+For example, a Deployment has a `status` subresource and a `scale` subresource, so you can
+use `kubectl` to get or modify just the `status` subresource of a Deployment.
 
 Here's a manifest for a Deployment that has two replicas:
 -->
-使用 kubectl 命令（如 get、patch、edit 和 replace）时带上 `--subresource=[subresource-name]` 标志，
-可以获取和更新资源的 `status` 和 `scale` 子资源（适用于 kubectl v1.24 或更高版本）。
-这个标志可用于带有 `status` 或 `scale` 子资源的所有 API 资源 (内置资源和 CR 资源)。
-Deployment 是支持这些子资源的其中一个例子。
+使用 kubectl 命令（如 get、patch、edit 和 replace）时带上
+`--subresource=[subresource-name]` 标志，
+可以获取和更新资源的 `status`、`scale` 和 `resize` 子资源。
+这个标志可用于带有 `status` 或 `scale` 和 `resize` 子资源的所有 API
+资源（内置资源和 CR 资源）。
 
-下面是有两个副本的 Deployment 的清单。
+例如，Deployment 具有 `status` 子资源和 `scale` 子资源，
+因此你可以使用 `kubectl` 来仅获取或修改 Deployment 的 `status` 子资源。
 
 {{% code_sample file="application/deployment.yaml" %}}
 
@@ -685,7 +689,7 @@ nginx-deployment-7fb96c846b-mlgns   1/1     Running   0          47s
 <!--
 Now, patch that Deployment with `--subresource=[subresource-name]` flag:
 -->
-现在用 `--subresource=[subresource-name]` 标志修补此 Deployment：
+现在用 `--subresource=[subresource-name]` 标志 patch 此 Deployment：
 
 ```shell
 kubectl patch deployment nginx-deployment --subresource='scale' --type='merge' -p '{"spec":{"replicas":3}}'
@@ -703,7 +707,7 @@ scale.autoscaling/nginx-deployment patched
 <!--
 View the Pods associated with your patched Deployment:
 -->
-查看与你所修补的 Deployment 关联的 Pod：
+查看与你所 patch 的 Deployment 关联的 Pod：
 
 ```shell
 kubectl get pods -l app=nginx
@@ -724,7 +728,7 @@ nginx-deployment-7fb96c846b-mlgns   1/1     Running   0          107s
 <!--
 View the patched Deployment:
 -->
-查看所修补的 Deployment：
+查看所 patch 后的 Deployment：
 
 ```shell
 kubectl get deployment nginx-deployment -o yaml
