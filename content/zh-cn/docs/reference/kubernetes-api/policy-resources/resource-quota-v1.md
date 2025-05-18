@@ -104,7 +104,7 @@ ResourceQuotaSpec 定义为 Quota 强制执行所需的硬限制。
     
     A list of scope selector requirements by scope of the resources. 
     -->
-    **原子：将在合并期间被替换**
+    **原子性：将在合并期间被替换**
 
     按资源范围划分的范围选择算符需求列表。
 
@@ -138,7 +138,7 @@ ResourceQuotaSpec 定义为 Quota 强制执行所需的硬限制。
 
       An array of string values. If the operator is In or NotIn, the values array must be non-empty. If the operator is Exists or DoesNotExist, the values array must be empty. This array is replaced during a strategic merge patch. 
       -->
-      **原子：将在合并期间被替换**
+      **原子性：将在合并期间被替换**
 
       字符串值数组。
       如果操作符是 In 或 NotIn，values 数组必须是非空的。
@@ -153,7 +153,7 @@ ResourceQuotaSpec 定义为 Quota 强制执行所需的硬限制。
   A collection of filters that must match each object tracked by a quota. If not specified, the quota matches all objects. 
   -->
 
-  **原子：将在合并期间被替换**
+  **原子性：将在合并期间被替换**
 
   一个匹配被配额跟踪的所有对象的过滤器集合。
   如果没有指定，则默认匹配所有对象。

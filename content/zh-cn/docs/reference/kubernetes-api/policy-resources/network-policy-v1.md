@@ -80,7 +80,7 @@ NetworkPolicySpec 定义特定 NetworkPolicy 所需的所有信息.
 -->
 - **policyTypes** ([]string)
 
-  **原子：将在合并期间被替换**
+  **原子性：将在合并期间被替换**
 
   policyTypes 是 NetworkPolicy 相关的规则类型列表。有效选项为 `[“Ingress”]`、`[“Egress”]` 或 `[“Ingress”， “Egress”]`。
   如果不指定此字段，则默认值取决是否存在 Ingress 或 Egress 规则；规则里包含 Egress 部分的策略将会影响出站流量，
@@ -101,7 +101,7 @@ NetworkPolicySpec 定义特定 NetworkPolicy 所需的所有信息.
 -->
 - **ingress** ([]NetworkPolicyIngressRule)
 
-  **原子：将在合并期间被替换**
+  **原子性：将在合并期间被替换**
 
   ingress 是应用到所选 Pod 的入站规则列表。在没有被任何 NetworkPolicy 选择到 Pod 的情况下（同时假定集群策略允许对应流量），
   或者如果流量源是 Pod 的本地节点，或者流量与所有 NetworkPolicy 中的至少一个入站规则（Ingress) 匹配，
@@ -125,7 +125,7 @@ NetworkPolicySpec 定义特定 NetworkPolicy 所需的所有信息.
 
   - **ingress.from** ([]NetworkPolicyPeer)
 
-    **原子：将在合并期间被替换**
+    **原子性：将在合并期间被替换**
 
     from 是流量来源列表，列表中的来源可以访问被此规则选中的 Pod。此列表中的流量来源使用逻辑或操作进行组合。
     如果此字段为空值或缺失（未设置），
@@ -171,7 +171,7 @@ NetworkPolicySpec 定义特定 NetworkPolicy 所需的所有信息.
 
       - **ingress.from.ipBlock.except** ([]string)
 
-        **原子：将在合并期间被替换**
+        **原子性：将在合并期间被替换**
 
         except 是一个由 CIDR 范围组成的列表，其中指定的 CIDR 都应排除在此 IP 区块范围之外。
         例如 `"192.168.1.0/24"` 或 `"2001:db8::/64"`。
@@ -223,7 +223,7 @@ NetworkPolicySpec 定义特定 NetworkPolicy 所需的所有信息.
 
   - **ingress.ports** ([]NetworkPolicyPort)
 
-    **原子：将在合并期间被替换**
+    **原子性：将在合并期间被替换**
 
     ports 是在此规则选中的 Pod 上应可访问的端口列表。此列表中的个项目使用逻辑或操作组合。如果此字段为空或缺失，
     则此规则匹配所有端口（进入流量可访问任何端口）。
@@ -282,7 +282,7 @@ NetworkPolicySpec 定义特定 NetworkPolicy 所需的所有信息.
 -->
 - **egress** ([]NetworkPolicyEgressRule)
 
-  **原子：将在合并期间被替换**
+  **原子性：将在合并期间被替换**
 
   egress 是应用到所选 Pod 的出站规则的列表。如果没有 NetworkPolicy 选中指定 Pod（并且其他集群策略也允许出口流量），
   或者在所有通过 podSelector 选中了某 Pod 的 NetworkPolicy 中，至少有一条出站规则与出站流量匹配，
@@ -307,7 +307,7 @@ NetworkPolicySpec 定义特定 NetworkPolicy 所需的所有信息.
 
   - **egress.to** ([]NetworkPolicyPeer)
 
-    **原子：将在合并期间被替换**
+    **原子性：将在合并期间被替换**
 
     to 是针对此规则所选择的 Pod 的出口流量的目的地列表。此列表中的目的地使用逻辑或操作进行组合。如果此字段为空或缺失，
     则此规则匹配所有目的地（流量不受目的地限制）。如果此字段存在且至少包含一项目的地，则仅当流量与目标列表中的至少一个匹配时，
@@ -352,7 +352,7 @@ NetworkPolicySpec 定义特定 NetworkPolicy 所需的所有信息.
 
       - **egress.to.ipBlock.except** ([]string)
       
-        **原子：将在合并期间被替换**
+        **原子性：将在合并期间被替换**
 
         except 定义不应包含在 ipBlock 内的 CIDR 范围列表。例如 `"192.168.1.0/24"` 或 `"2001:db8::/64"`。
         如果 except 的值超出 ipBlock.cidr 的范围则被拒绝。
@@ -404,7 +404,7 @@ NetworkPolicySpec 定义特定 NetworkPolicy 所需的所有信息.
 
   - **egress.ports** ([]NetworkPolicyPort)
 
-    **原子：将在合并期间被替换**
+    **原子性：将在合并期间被替换**
 
     ports 是出站流量目的地的端口列表。此列表中的各个项目使用逻辑或操作进行组合。如果此字段为空或缺失，
     则此规则匹配所有端口（可访问出口流量目的地的任何端口）。如果此字段存在并且包含至少一个有效值，

@@ -80,7 +80,7 @@ LimitRangeSpec 定义与类别匹配的资源的最小/最大使用限制。
 -->
 - **limits** ([]LimitRangeItem)，必需
 
-  **原子：将在合并期间被替换**
+  **原子性：将在合并期间被替换**
 
   limits 是强制执行的 LimitRangeItem 对象的列表。
 
