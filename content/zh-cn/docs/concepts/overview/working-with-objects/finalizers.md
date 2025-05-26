@@ -1,5 +1,5 @@
 ---
-title: Finalizers
+title: Finalizer
 content_type: concept
 weight: 80
 ---
@@ -13,7 +13,7 @@ You can use finalizers to control {{<glossary_tooltip text="garbage collection" 
 of {{< glossary_tooltip text="objects" term_id="object" >}} by alerting {{<glossary_tooltip text="controllers" term_id="controller">}}
 to perform specific cleanup tasks before deleting the target resource.
 -->
-你可以使用 Finalizers 来控制{{< glossary_tooltip text="对象" term_id="object" >}}的{{<glossary_tooltip text="垃圾回收" term_id="garbage-collection">}}，
+你可以使用 Finalizer 来控制{{< glossary_tooltip text="对象" term_id="object" >}}的{{<glossary_tooltip text="垃圾回收" term_id="garbage-collection">}}，
 方法是在删除目标资源之前提醒{{<glossary_tooltip text="控制器" term_id="controller">}}执行特定的清理任务。
 
 <!--
@@ -22,9 +22,9 @@ typically lists of keys on a specific resource similar to annotations.
 Kubernetes specifies some finalizers automatically, but you can also specify
 your own.
 -->
-Finalizers 通常不指定要执行的代码。
+Finalizer 通常不指定要执行的代码。
 相反，它们通常是特定资源上的键的列表，类似于注解。
-Kubernetes 自动指定了一些 Finalizers，但你也可以指定你自己的。
+Kubernetes 自动指定了一些 Finalizer，但你也可以指定你自己的。
 
 <!--
 ## How finalizers work
@@ -42,11 +42,12 @@ and does the following:
 -->
 ## Finalizers 如何工作   {#how-finalizers-work}
 
-当你使用清单文件创建资源时，你可以在 `metadata.finalizers` 字段指定 Finalizers。
+当你使用清单文件创建资源时，你可以在 `metadata.finalizers` 字段指定 Finalizer。
 当你试图删除该资源时，处理删除请求的 API 服务器会注意到 `finalizers` 字段中的值，
 并进行以下操作：
 
   * 修改对象，将你开始执行删除的时间添加到 `metadata.deletionTimestamp` 字段。
+  * 禁止对象被删除，直到其 `metadata.finalizers` 字段为空。
   * 禁止对象被删除，直到其 `metadata.finalizers` 字段内的所有项被删除。
   * 返回 `202` 状态码（HTTP "Accepted"）。
 
@@ -59,11 +60,11 @@ controller removes that key from the resource's `finalizers` field. When the
 `finalizers` field is emptied, an object with a `deletionTimestamp` field set
 is automatically deleted. You can also use finalizers to prevent deletion of unmanaged resources.
 -->
-管理 finalizer 的控制器注意到对象上发生的更新操作，对象的 `metadata.deletionTimestamp`
-被设置，意味着已经请求删除该对象。然后，控制器会试图满足资源的 Finalizers 的条件。
+管理 Finalizer 的控制器注意到对象上发生的更新操作，对象的 `metadata.deletionTimestamp`
+被设置，意味着已经请求删除该对象。然后，控制器会试图满足资源的 Finalizer 的条件。
 每当一个 Finalizer 的条件被满足时，控制器就会从资源的 `finalizers` 字段中删除该键。
 当 `finalizers` 字段为空时，`deletionTimestamp` 字段被设置的对象会被自动删除。
-你也可以使用 Finalizers 来阻止删除未被管理的资源。
+你也可以使用 Finalizer 来阻止删除未被管理的资源。
 
 <!--
 A common example of a finalizer is `kubernetes.io/pv-protection`, which prevents
@@ -93,11 +94,22 @@ object once it is set.
 
 * After the deletion is requested, you can not resurrect this object. The only way is to delete it and make a new similar object.
 -->
-* 当你 `DELETE` 一个对象时，Kubernetes 为该对象增加删除时间戳，然后立即开始限制
-对这个正处于待删除状态的对象的 `.metadata.finalizers` 字段进行修改。
-你可以删除现有的 finalizers （从 `finalizers` 列表删除条目），但你不能添加新的 finalizer。
-对象的 `deletionTimestamp` 被设置后也不能修改。
+* 当你 `DELETE` 一个对象时，Kubernetes 为该对象增加删除时间戳，
+  然后立即开始限制对这个正处于待删除状态的对象的 `.metadata.finalizers` 字段进行修改。
+  你可以删除现有的 Finalizer（从 `finalizers` 列表删除条目），但你不能添加新的 Finalizer。
+  对象的 `deletionTimestamp` 被设置后也不能修改。
+
 * 删除请求已被发出之后，你无法复活该对象。唯一的方法是删除它并创建一个新的相似对象。
+{{</note>}}
+
+{{<note>}}
+<!--
+Custom finalizer names **must** be publicly qualified finalizer names, such as `example.com/finalizer-name`.
+Kubernetes enforces this format; the API server rejects writes to objects where the change does not use qualified finalizer names for any custom finalizer.
+-->
+自定义的 Finalizer 名称**必须**是公开限定的 Finalizer 名称，例如
+`example.com/finalizer-name`。
+Kubernetes 强制执行此格式；API 服务器会拒绝写入那些更改未使用限定终结器名称的对象。
 {{</note>}}
 
 <!--
@@ -113,13 +125,13 @@ example, when a {{<glossary_tooltip text="Job" term_id="job">}} creates one or
 more Pods, the Job controller applies labels to those pods and tracks changes to
 any Pods in the cluster with the same label.
 -->
-## 属主引用、标签和 Finalizers {#owners-labels-finalizers}
+## 属主引用、标签和 Finalizer  {#owners-labels-finalizers}
 
 与{{<glossary_tooltip text="标签" term_id="label">}}类似，
 [属主引用](/zh-cn/docs/concepts/overview/working-with-objects/owners-dependents/)
 描述了 Kubernetes 中对象之间的关系，但它们作用不同。
-当一个{{<glossary_tooltip text="控制器" term_id="controller">}}
-管理类似于 Pod 的对象时，它使用标签来跟踪相关对象组的变化。
+当一个{{<glossary_tooltip text="控制器" term_id="controller">}}管理类似于
+Pod 的对象时，它使用标签来跟踪相关对象组的变化。
 例如，当 {{<glossary_tooltip text="Job" term_id="job">}} 创建一个或多个 Pod 时，
 Job 控制器会给这些 Pod 应用上标签，并跟踪集群中的具有相同标签的 Pod 的变化。
 
@@ -131,22 +143,23 @@ cluster need cleanup.
 
 Kubernetes also processes finalizers when it identifies owner references on a
 resource targeted for deletion. 
+-->
+Job 控制器还为这些 Pod 添加了“属主引用”，指向创建 Pod 的 Job。
+如果你在这些 Pod 运行的时候删除了 Job，
+Kubernetes 会使用属主引用（而不是标签）来确定集群中哪些 Pod 需要清理。
 
+当 Kubernetes 识别到要删除的资源上的属主引用时，它也会处理 Finalizer。
+
+<!--
 In some situations, finalizers can block the deletion of dependent objects,
 which can cause the targeted owner object to remain for
 longer than expected without being fully deleted. In these situations, you
 should check finalizers and owner references on the target owner and dependent
 objects to troubleshoot the cause. 
 -->
-Job 控制器还为这些 Pod 添加了“属主引用”，指向创建 Pod 的 Job。
-如果你在这些 Pod 运行的时候删除了 Job，
-Kubernetes 会使用属主引用（而不是标签）来确定集群中哪些 Pod 需要清理。
-
-当 Kubernetes 识别到要删除的资源上的属主引用时，它也会处理 Finalizers。
-
-在某些情况下，Finalizers 会阻止依赖对象的删除，
+在某些情况下，Finalizer 会阻止依赖对象的删除，
 这可能导致目标属主对象被保留的时间比预期的长，而没有被完全删除。
-在这些情况下，你应该检查目标属主和附属对象上的 Finalizers 和属主引用，来排查原因。
+在这些情况下，你应该检查目标属主和附属对象上的 Finalizer 和属主引用，来排查原因。
 
 {{< note >}}
 <!--
@@ -156,11 +169,10 @@ to resources for a reason, so forcefully removing them can lead to issues in
 your cluster. This should only be done when the purpose of the finalizer is
 understood and is accomplished in another way (for example, manually cleaning
 up some dependent object).
-
 -->
-在对象卡在删除状态的情况下，要避免手动移除 Finalizers，以允许继续删除操作。
-Finalizers 通常因为特殊原因被添加到资源上，所以强行删除它们会导致集群出现问题。
-只有了解 finalizer 的用途时才能这样做，并且应该通过一些其他方式来完成
+在对象卡在删除状态的情况下，要避免手动移除 Finalizer，以允许继续删除操作。
+Finalizer 通常因为特殊原因被添加到资源上，所以强行删除它们会导致集群出现问题。
+只有了解 Finalizer 的用途时才能这样做，并且应该通过一些其他方式来完成
 （例如，手动清除其余的依赖对象）。
 {{< /note >}}
 
@@ -170,4 +182,4 @@ Finalizers 通常因为特殊原因被添加到资源上，所以强行删除它
 * Read [Using Finalizers to Control Deletion](/blog/2021/05/14/using-finalizers-to-control-deletion/)
   on the Kubernetes blog.
 -->
-* 在 Kubernetes 博客上阅读[使用 Finalizers 控制删除](/blog/2021/05/14/using-finalizers-to-control-deletion/)。
+* 在 Kubernetes 博客上阅读[使用 Finalizer 控制删除](/blog/2021/05/14/using-finalizers-to-control-deletion/)。
