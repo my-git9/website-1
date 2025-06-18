@@ -53,24 +53,24 @@ A policy is generally made up of three resources:
 - The `ValidatingAdmissionPolicy` describes the abstract logic of a policy
   (think: "this policy makes sure a particular label is set to a particular value").
 
-- A `ValidatingAdmissionPolicyBinding` links the above resources together and provides scoping.
-  If you only want to require an `owner` label to be set for `Pods`, the binding is where you would
-  specify this restriction.
-
 - A parameter resource provides information to a ValidatingAdmissionPolicy to make it a concrete
   statement (think "the `owner` label must be set to something that ends in `.company.com`").
   A native type such as ConfigMap or a CRD defines the schema of a parameter resource.
   `ValidatingAdmissionPolicy` objects specify what Kind they are expecting for their parameter resource.
+
+- A `ValidatingAdmissionPolicyBinding` links the above resources together and provides scoping.
+  If you only want to require an `owner` label to be set for `Pods`, the binding is where you would
+  specify this restriction.
 -->
 - `ValidatingAdmissionPolicy` 描述策略的抽象逻辑（想想看：“这个策略确保一个特定标签被设置为一个特定值”）。
-
-- 一个 `ValidatingAdmissionPolicyBinding` 将上述资源联系在一起，并提供作用域。
-  如果你只想为 `Pods` 设置一个 `owner` 标签，你就需要在这个绑定中指定这个限制。
 
 - 参数资源为 `ValidatingAdmissionPolicy` 提供信息，使其成为一个具体的声明
   （想想看：“`owner` 标签必须被设置为以 `.company.com` 结尾的形式"）。
   参数资源的模式（Schema）使用诸如 ConfigMap 或 CRD 这类原生类型定义。
   `ValidatingAdmissionPolicy` 对象指定它们期望参数资源所呈现的类型。
+
+- 一个 `ValidatingAdmissionPolicyBinding` 将上述资源联系在一起，并提供作用域。
+  如果你只想为 `Pods` 设置一个 `owner` 标签，你就需要在这个绑定中指定这个限制。
 
 <!--
 At least a `ValidatingAdmissionPolicy` and a corresponding `ValidatingAdmissionPolicyBinding`
@@ -180,6 +180,7 @@ validation failures, use:
 ```yaml
 validationActions: [Warn, Audit]
 ```
+
 <!--
 `Deny` and `Warn` may not be used together since this combination
 needlessly duplicates the validation failure both in the
@@ -280,6 +281,7 @@ An admission policy may have multiple bindings. To bind all other environments
 to have a maxReplicas limit of 100, create another ValidatingAdmissionPolicyBinding:
 -->
 此策略参数资源将限制 Deployment 最多有 3 个副本。
+
 一个准入策略可以有多个绑定。
 要绑定所有的其他环境，限制 maxReplicas 为 100，请创建另一个 ValidatingAdmissionPolicyBinding：
 
@@ -458,6 +460,95 @@ resources of groups is required.
 `read` 访问权限。
 
 <!--
+#### `paramRef`
+
+The `paramRef` field specifies the parameter resource used by the policy. It has the following fields:
+-->
+#### `paramRef`
+
+`paramRef` 字段用于指定策略所使用的参数资源。它包含以下字段：
+
+<!--
+- **name**: The name of the parameter resource.
+- **namespace**: The namespace of the parameter resource.
+- **selector**: A label selector to match multiple parameter resources.
+- **parameterNotFoundAction**: (Required) Controls the behavior when the specified parameters are not found.
+-->
+- **name**：参数资源的名称。
+- **namespace**：参数资源所在的命名空间。
+- **selector**：用于匹配多个参数资源的标签选择算符。
+- **parameterNotFoundAction**：（必需项）控制在未找到指定参数时的行为。
+
+  <!--
+  - **Allowed Values**:
+    - **`Allow`**: The absence of matched parameters is treated as a successful validation by the binding.
+    - **`Deny`**: The absence of matched parameters is subject to the `failurePolicy` of the policy.
+  -->
+
+  - **允许的取值**：
+    - **`Allow`**：如果未匹配到参数，绑定会将其视为验证成功。
+    - **`Deny`**：如果未匹配到参数，则取决于策略的 `failurePolicy`。
+
+<!--
+One of `name` or `selector` must be set, but not both.
+-->
+`name` 和 `selector` 必须设置其中之一，但不能同时设置。
+
+{{< note >}}
+
+<!--
+The `parameterNotFoundAction` field in `paramRef` is **required**. It specifies the action to take when no parameters are found matching the `paramRef`. If not specified, the policy binding may be considered invalid and will be ignored or could lead to unexpected behavior.
+-->
+`paramRef` 中的 `parameterNotFoundAction` 字段是**必需项**。
+它指定在没有参数与 `paramRef` 匹配时应采取的操作。
+如果未指定此字段，策略绑定可能被视为无效，进而被忽略，或可能导致意料之外的行为。
+
+<!--
+- **`Allow`**: If set to `Allow`, and no parameters are found, the binding treats the absence of parameters as a successful validation, and the policy is considered to have passed.
+- **`Deny`**: If set to `Deny`, and no parameters are found, the binding enforces the `failurePolicy` of the policy. If the `failurePolicy` is `Fail`, the request is rejected.
+
+Make sure to set `parameterNotFoundAction` according to the desired behavior when parameters are missing.
+-->
+- **`Allow`**：如果设置为 `Allow`，且未找到参数，绑定会将参数缺失视为验证成功，
+  此策略被认为是通过的。
+- **`Deny`**：如果设置为 `Deny`，且未找到参数，绑定将执行策略的 `failurePolicy`。
+  如果 `failurePolicy` 设置为 `Fail`，则该请求会被拒绝。
+
+请根据在参数缺失时期望的行为，正确设置 `parameterNotFoundAction`。
+
+{{< /note >}}
+
+<!--
+#### Handling Missing Parameters with `parameterNotFoundAction`
+
+When using `paramRef` with a selector, it's possible that no parameters match the selector. The `parameterNotFoundAction` field determines how the binding behaves in this scenario.
+
+**Example:**
+-->
+#### 使用 `parameterNotFoundAction` 处理缺失的参数
+
+当在 `paramRef` 中使用 `selector` 时，有可能不会匹配到任何参数。
+在这种情况下，`parameterNotFoundAction` 字段决定绑定的行为。
+
+**示例：**
+
+```yaml
+apiVersion: admissionregistration.k8s.io/v1alpha1
+kind: ValidatingAdmissionPolicyBinding
+metadata:
+  name: example-binding
+spec:
+  policyName: example-policy
+  paramRef:
+    selector:
+      matchLabels:
+        environment: test
+    parameterNotFoundAction: Allow
+  validationActions:
+  - Deny
+```  
+
+<!--
 ### Failure Policy
 
 `failurePolicy` defines how mis-configurations and CEL expressions evaluating to error from the
@@ -495,7 +586,7 @@ variables as well as some other useful variables:
 
 `spec.validations[i].expression` 代表将使用 CEL 来计算表达式。
 要了解更多信息，请参阅 [CEL 语言规范](https://github.com/google/cel-spec)。
-CEL 表达式可以访问按 CEL 变量来组织的 Admission 请求/响应的内容，以及其他一些有用的变量 :
+CEL 表达式可以访问按 CEL 变量来组织的 Admission 请求/响应的内容，以及其他一些有用的变量：
 
 <!--
 - 'object' - The object from the incoming request. The value is null for DELETE requests.
@@ -569,11 +660,8 @@ Concatenation on arrays with x-kubernetes-list-type use the semantics of the lis
 | `object.set1.all(e, !(e in object.set2))`                                                    | Validate that two listSets are disjoint                                           |
 | `size(object.names) == size(object.details) && object.names.all(n, n in object.details)`     | Validate the 'details' map is keyed by the items in the 'names' listSet           |
 | `size(object.clusters.filter(c, c.name == object.primary)) == 1`                             | Validate that the 'primary' property has one and only one occurrence in the 'clusters' listMap           |
-
-
 -->
 #### 检查表达式示例
-
 
 | 表达式                                                                                        | 目的                                                                     |
 | --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
@@ -709,7 +797,7 @@ When an API request is validated with this admission policy, the resulting audit
 In this example the annotation will only be included if the `spec.replicas` of the Deployment is more than
 50, otherwise the CEL expression evaluates to null and the annotation will not be included.
 
-Note that audit annotation keys are prefixed by the name of the `ValidatingAdmissionWebhook` and a `/`. If
+Note that audit annotation keys are prefixed by the name of the `ValidatingAdmissionPolicy` and a `/`. If
 another admission controller, such as an admission webhook, uses the exact same audit annotation key, the 
 value of the first admission controller to include the audit annotation will be included in the audit
 event and all other values will be ignored.
@@ -717,7 +805,7 @@ event and all other values will be ignored.
 在此示例中，只有 Deployment 的 `spec.replicas` 大于 50 时才会包含注解，
 否则 CEL 表达式将求值为 null，并且不会包含注解。
 
-请注意，审计注解键以 `ValidatingAdmissionWebhook` 的名称和 `/` 为前缀。
+请注意，审计注解键以 `ValidatingAdmissionPolicy` 的名称和 `/` 为前缀。
 如果另一个准入控制器（例如准入 Webhook）使用完全相同的审计注解键，
 则第一个包括审计注解值的准入控制器将出现在审计事件中，而所有其他值都将被忽略。
 
@@ -750,7 +838,7 @@ when we try to create a deployment with 5 replicas, we will receive the followin
 在创建限制副本为 3 的 Params 对象并设置绑定之后，当我们尝试创建具有 5 个副本的 Deployment
 时，我们将收到以下消息：
 
-```
+```shell
 $ kubectl create deploy --image=nginx nginx --replicas=5
 error: failed to create deployment: deployments.apps "nginx" is forbidden: ValidatingAdmissionPolicy 'deploy-replica-policy.example.com' with binding 'demo-binding-test.example.com' denied request: object.spec.replicas must be no greater than 3
 ```
@@ -921,3 +1009,26 @@ The error message is similar to this.
 ```console
 error: failed to create deployment: deployments.apps "invalid" is forbidden: ValidatingAdmissionPolicy 'image-matches-namespace-environment.policy.example.com' with binding 'demo-binding-test.example.com' denied request: only prod images are allowed in namespace default
 ```
+
+<!--
+## API kinds exempt from admission validation
+
+There are certain API kinds that are exempt from admission-time validation checks. For example, you can't create a ValidatingAdmissionPolicy that prevents changes to ValidatingAdmissionPolicyBindings.
+
+The list of exempt API kinds is:
+-->
+## 免于准入验证的 API 类别   {#api-kinds-exempt-from-admission-validation}
+
+某些 API 类别可以豁免准入时验证检查。例如，你无法创建阻止更改 ValidatingAdmissionPolicyBindings
+的 ValidatingAdmissionPolicy。
+
+豁免准入验证的 API 类别列表如下：
+
+* [ValidatingAdmissionPolicies]({{< relref "/docs/reference/kubernetes-api/policy-resources/validating-admission-policy-v1/" >}})
+* [ValidatingAdmissionPolicyBindings]({{< relref "/docs/reference/kubernetes-api/policy-resources/validating-admission-policy-binding-v1/" >}})
+* MutatingAdmissionPolicies
+* MutatingAdmissionPolicyBindings
+* [TokenReviews]({{< relref "/docs/reference/kubernetes-api/authentication-resources/token-review-v1/" >}})
+* [LocalSubjectAccessReviews]({{< relref "/docs/reference/kubernetes-api/authorization-resources/local-subject-access-review-v1/" >}})
+* [SelfSubjectAccessReviews]({{< relref "/docs/reference/kubernetes-api/authorization-resources/self-subject-access-review-v1/" >}})
+* [SelfSubjectReviews]({{< relref "/docs/reference/kubernetes-api/authentication-resources/self-subject-review-v1/" >}})

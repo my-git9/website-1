@@ -33,9 +33,7 @@ presents a valid certificate signed by the cluster's certificate authority
 the username from the common name field in the 'subject' of the cert (e.g.,
 "/CN=bob"). From there, the role based access control (RBAC) sub-system would
 determine whether the user is authorized to perform a specific operation on a
-resource. For more details, refer to the normal users topic in
-[certificate request](/docs/reference/access-authn-authz/certificate-signing-requests/#normal-user)
-for more details about this.
+resource.
 
 In contrast, service accounts are users managed by the Kubernetes API. They are
 bound to specific namespaces, and created automatically by the API server or
@@ -329,7 +327,7 @@ To enable the plugin, configure the following flags on the API server:
 | `--oidc-groups-prefix` | Prefix prepended to group claims to prevent clashes with existing names (such as `system:` groups). For example, the value `oidc:` will create group names like `oidc:engineering` and `oidc:infra`. | `oidc:` | No |
 | `--oidc-required-claim` | A key=value pair that describes a required claim in the ID Token. If set, the claim is verified to be present in the ID Token with a matching value. Repeat this flag to specify multiple claims. | `claim=value` | No |
 | `--oidc-ca-file` | The path to the certificate for the CA that signed your identity provider's web certificate. Defaults to the host's root CAs. | `/etc/kubernetes/ssl/kc-ca.pem` | No |
-| `--oidc-signing-algs` | The signing algorithms accepted. Default is "RS256". | `RS512` | No |
+| `--oidc-signing-algs` | The signing algorithms accepted. Default is RS256. Allowed values are: RS256, RS384, RS512, ES256, ES384, ES512, PS256, PS384, PS512. Values are defined by RFC 7518 https://tools.ietf.org/html/rfc7518#section-3.1. | `RS512` | No |
 
 ##### Authentication configuration from a file {#using-authentication-configuration}
 
@@ -442,7 +440,9 @@ jwt:
       # 1.  If username.expression uses 'claims.email', then 'claims.email_verified' must be used in
       #     username.expression or extra[*].valueExpression or claimValidationRules[*].expression.
       #     An example claim validation rule expression that matches the validation automatically
-      #     applied when username.claim is set to 'email' is 'claims.?email_verified.orValue(true)'.
+      #     applied when username.claim is set to 'email' is 'claims.?email_verified.orValue(true) == true'.
+      #     By explicitly comparing the value to true, we let type-checking see the result will be a boolean, and
+      #     to make sure a non-boolean email_verified claim will be caught at runtime.
       # 2.  If the username asserted based on username.expression is the empty string, the authentication
       #     request will fail.
       expression: 'claims.username + ":external-user"'
@@ -1815,5 +1815,6 @@ You can only make `SelfSubjectReview` requests if:
 
 ## {{% heading "whatsnext" %}}
 
+* To learn about issuing certificates for users, read [Issue a Certificate for a Kubernetes API Client Using A CertificateSigningRequest](/docs/tasks/tls/certificate-issue-client-csr/)
 * Read the [client authentication reference (v1beta1)](/docs/reference/config-api/client-authentication.v1beta1/)
 * Read the [client authentication reference (v1)](/docs/reference/config-api/client-authentication.v1/)

@@ -5,7 +5,7 @@ weight: 50
 ---
 
 <!-- overview -->
-{{< feature-state for_k8s_version="v1.29" state="beta" >}}
+{{< feature-state feature_gate_name="SidecarContainers" >}}
 
 Sidecar containers are the secondary containers that run along with the main
 application container within the same {{< glossary_tooltip text="Pod" term_id="pod" >}}.
@@ -32,7 +32,7 @@ Provided that your cluster has the `SidecarContainers`
 for containers listed in a Pod's `initContainers` field.
 These restartable _sidecar_ containers are independent from other init containers and from
 the main application container(s) within the same pod.
-These can be started, stopped, or restarted without effecting the main application container
+These can be started, stopped, or restarted without affecting the main application container
 and other init containers.
 
 You can also run a Pod with multiple containers that are not marked as init or sidecar
@@ -97,9 +97,9 @@ maintain sidecar containers without affecting the primary application.
 Sidecar containers share the same network and storage namespaces with the primary
 container. This co-location allows them to interact closely and share resources.
 
-From Kubernetes perspective, sidecars graceful termination is less important. 
-When other containers took all alloted graceful termination time, sidecar containers
-will receive the `SIGTERM` following with `SIGKILL` faster than may be expected. 
+From a Kubernetes perspective, the sidecar container's graceful termination is less important.
+When other containers take all allotted graceful termination time, the sidecar containers
+will receive the `SIGTERM` signal, followed by the `SIGKILL` signal, before they have time to terminate gracefully. 
 So exit codes different from `0` (`0` indicates successful exit), for sidecar containers are normal
 on Pod termination and should be generally ignored by the external tooling.
 
