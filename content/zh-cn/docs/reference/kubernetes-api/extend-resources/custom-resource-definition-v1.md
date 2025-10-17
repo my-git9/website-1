@@ -117,7 +117,7 @@ CustomResourceDefinitionSpec 描述了用户希望资源的呈现方式。
     -->
 
     **原子：将在合并期间被替换**
-    
+
     <!--
     categories is a list of grouped resources this custom resource belongs to (e.g. 'all'). This is published in API discovery documents, and used by clients to support invocations like `kubectl get all`.
     -->
@@ -145,7 +145,8 @@ CustomResourceDefinitionSpec 描述了用户希望资源的呈现方式。
     shortNames are short names for the resource, exposed in API discovery documents, and used by clients to support invocations like `kubectl get \<shortname>`. It must be all lowercase.
     -->
 
-    shortNames 是资源的短名称，在 API 发现文档中公开，并支持客户端调用，如 `kubectl get <shortname>`。必须全部小写。
+    shortNames 是资源的短名称，在 API 发现文档中公开，并支持客户端调用，如
+    `kubectl get <shortname>`。必须全部小写。
 
   - **names.singular** (string)
 
@@ -162,7 +163,7 @@ CustomResourceDefinitionSpec 描述了用户希望资源的呈现方式。
 -->
 
 - **scope** (string)，必需
-  
+
   scope 表示自定义资源是集群作用域还是命名空间作用域。允许的值为 `Cluster` 和 `Namespaced`。
 
 <!--
@@ -234,7 +235,7 @@ CustomResourceDefinitionSpec 描述了用户希望资源的呈现方式。
     additionalPrinterColumns 表示在表输出中返回的附加列。
     有关详细信息，请参阅 https://kubernetes.io/zh-cn/docs/reference/using-api/api-concepts/#receiving-resources-as-tables。
     如果没有指定列，则显示自定义资源存活时间（AGE）列。
-  
+
     <a name="CustomResourceColumnDefinition"></a>
     <!--
     *CustomResourceColumnDefinition specifies a column for server side printing.*
@@ -328,7 +329,7 @@ CustomResourceDefinitionSpec 描述了用户希望资源的呈现方式。
     *CustomResourceValidation is a list of validation methods for CustomResources.*
     -->
 
-    **CustomResourceValidation 是 CustomResources 的验证方法列表。**  
+    **CustomResourceValidation 是 CustomResources 的验证方法列表。**
 
     - **versions.schema.openAPIV3Schema** (<a href="{{< ref "../extend-resources/custom-resource-definition-v1#JSONSchemaProps" >}}">JSONSchemaProps</a>)
 
@@ -364,7 +365,7 @@ CustomResourceDefinitionSpec 描述了用户希望资源的呈现方式。
   - **versions.selectableFields.jsonPath** (string), required
 
     <!--
-    jsonPath is a simple JSON path which is evaluated against each custom resource to produce a field selector value. Only JSON paths without the array notation are allowed. Must point to a field of type string, boolean or integer. Types with enum values and strings with formats are allowed. If jsonPath refers to absent field in a resource, the jsonPath evaluates to an empty string. Must not point to metdata fields. Required.
+    jsonPath is a simple JSON path which is evaluated against each custom resource to produce a field selector value. Only JSON paths without the array notation are allowed. Must point to a field of type string, boolean or integer. Types with enum values and strings with formats are allowed. If jsonPath refers to absent field in a resource, the jsonPath evaluates to an empty string. Must not point to metadata fields. Required.
     -->
   
     jsonPath 是一个简单的 JSON 路径，它会根据每个自定义资源进行求值以生成字段选择器值。
@@ -798,7 +799,7 @@ JSONSchemaProps 是JSON 模式（JSON-Schema），遵循其规范草案第 4 版
   <!--
   *JSONSchemaPropsOrArray represents a value that can either be a JSONSchemaProps or an array of JSONSchemaProps. Mainly here for serialization purposes.*
   -->
-  **JSONSchemaPropsOrArray 表示可以是 JSONSchemaProps 或 JSONSchemaProps 数组的值。这里目的主要用于序列化。**  
+  **JSONSchemaPropsOrArray 表示可以是 JSONSchemaProps 或 JSONSchemaProps 数组的值。这里目的主要用于序列化。**
 
 - **maxItems** (int64)
 
@@ -1249,12 +1250,12 @@ CustomResourceDefinitionStatus 表示 CustomResourceDefinition 的状态。
 
     <!--
     *Atomic: will be replaced during a merge*
-    
+
     categories is a list of grouped resources this custom resource belongs to (e.g. 'all'). This is published in API discovery documents, and used by clients to support invocations like `kubectl get all`.
     -->
 
     **原子：将在合并期间被替换**
-  
+
     categories 是此自定义资源所属的分组资源列表（例如 'all'）。
     它在 API 发现文档中发布，并被客户端用于支持像 `kubectl get all` 这样的调用。
 
@@ -1270,12 +1271,12 @@ CustomResourceDefinitionStatus 表示 CustomResourceDefinition 的状态。
 
     <!--
     *Atomic: will be replaced during a merge*
-    
+
     shortNames are short names for the resource, exposed in API discovery documents, and used by clients to support invocations like `kubectl get \<shortname>`. It must be all lowercase.
     -->
 
     **原子：将在合并期间被替换**
-  
+
     shortNames 是资源的短名称，在 API 发现文档中公开，并支持客户端调用，如 `kubectl get <shortname>`。必须全部小写。
 
   - **acceptedNames.singular** (string)
@@ -1290,7 +1291,7 @@ CustomResourceDefinitionStatus 表示 CustomResourceDefinition 的状态。
 
   <!--
   *Map: unique values on key type will be kept during a merge*
-  
+
   conditions indicate state for particular aspects of a CustomResourceDefinition
   -->
 
