@@ -239,7 +239,7 @@ The webhook would return:
 <!--
 Access to non-resource paths are sent as:
 -->
-对于非资源的路径访问是这么发送的:
+对于非资源的路径访问是这么发送的：
 
 ```json
 {
@@ -262,12 +262,13 @@ Access to non-resource paths are sent as:
 {{< feature-state feature_gate_name="AuthorizeWithSelectors" >}}
 
 <!--
-With the `AuthorizeWithSelectors` feature enabled, field and label selectors in the request
-are passed to the authorization webhook. The webhook can make authorization decisions
+When calling out to an authorization webhook, Kubernetes passes
+label and field selectors in the request to the authorization webhook.
+The authorization webhook can make authorization decisions
 informed by the scoped field and label selectors, if it wishes.
 -->
-启用 `AuthorizeWithSelectors` 特性后，请求中的字段和标签选择算符将被传递给授权 Webhook。
-此 Webhook 可以根据作用域字段和标签选择算符做出授权决策（如果它愿意的话）。
+当调用授权 Webhook 时，Kubernetes 会在请求中向授权 Webhook 传递标签和字段选择器。
+此授权 Webhook 可以根据作用域字段和标签选择算符做出授权决策（如果它愿意的话）。
 
 <!--
 The [SubjectAccessReview API documentation](/docs/reference/kubernetes-api/authorization-resources/subject-access-review-v1/)
@@ -276,7 +277,8 @@ specifically using the parsed requirements rather than the raw selector strings,
 and how to handle unrecognized operators safely.
 -->
 [SubjectAccessReview API 文档](/zh-cn/docs/reference/kubernetes-api/authorization-resources/subject-access-review-v1/)提供了这些字段应如何被授权
-Webhook 解释和处理的指南，特别是应使用解析后的要求而不是原始选择算符字符串，以及如何安全地处理未识别的操作符。
+Webhook 解释和处理的指南，特别是应使用解析后的要求而不是原始选择算符字符串，
+以及如何安全地处理未识别的操作符。
 
 ```json
 {
