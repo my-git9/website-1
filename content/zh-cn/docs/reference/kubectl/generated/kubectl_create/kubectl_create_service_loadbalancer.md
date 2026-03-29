@@ -2,12 +2,16 @@
 title: kubectl create service loadbalancer
 content_type: tool-reference
 weight: 30
+description: >-
+  创建 LoadBalancer 类型 Service
 ---
 <!--
 title: kubectl create service loadbalancer
 content_type: tool-reference
 weight: 30
 auto_generated: true
+description: >-
+  Create a LoadBalancer service
 -->
 
 ## {{% heading "synopsis" %}}

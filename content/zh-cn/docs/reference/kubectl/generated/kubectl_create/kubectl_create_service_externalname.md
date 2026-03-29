@@ -2,12 +2,16 @@
 title: kubectl create service externalname
 content_type: tool-reference
 weight: 30
+description: >-
+  创建 ExternalName 类型 Service
 ---
 <!--
 title: kubectl create service externalname
 content_type: tool-reference
 weight: 30
 auto_generated: true
+description: >-
+  Create an ExternalName service
 -->
 
 ## {{% heading "synopsis" %}}
