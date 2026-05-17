@@ -47,12 +47,12 @@ PriorityLevelConfiguration 表示一个优先级的配置。
   `spec` is the specification of the desired behavior of a "request-priority". More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
 -->
 - **metadata** (<a href="{{< ref "../common-definitions/object-meta#ObjectMeta" >}}">ObjectMeta</a>)
-  
+
   `metadata` 是标准的对象元数据。更多信息：
   https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
 
 - **spec** (<a href="{{< ref "../policy-resources/priority-level-configuration-v1#PriorityLevelConfigurationSpec" >}}">PriorityLevelConfigurationSpec</a>)
-  
+
   `spec` 是 “request-priority” 预期行为的规约。更多信息：
   https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
 
@@ -62,7 +62,7 @@ PriorityLevelConfiguration 表示一个优先级的配置。
   `status` is the current status of a "request-priority". More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
 -->
 - **status** (<a href="{{< ref "../policy-resources/priority-level-configuration-v1#PriorityLevelConfigurationStatus" >}}">PriorityLevelConfigurationStatus</a>)
-  
+
   `status` 是 “请求优先级” 的当前状况。更多信息：
   https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status
 
@@ -75,12 +75,24 @@ PriorityLevelConfigurationSpec 指定一个优先级的配置。
 
 <hr>
 
+<!--
+- **type** (string), required
+
+  `type` indicates whether this priority level is subject to limitation on request execution.  A value of `"Exempt"` means that requests of this priority level are not subject to a limit (and thus are never queued) and do not detract from the capacity made available to other priority levels.  A value of `"Limited"` means that (a) requests of this priority level _are_ subject to limits and (b) some of the server's limited capacity is made available exclusively to this priority level. Required.
+-->
+- **type** (string)，必需
+  
+  `type` 指示此优先级是否遵从有关请求执行的限制。
+  取值为 `"Exempt"` 意味着此优先级的请求不遵从某个限制（且因此从不排队）且不会减损其他优先级可用的容量。
+  取值为 `"Limited"` 意味着 (a) 此优先级的请求遵从这些限制且
+  (b) 服务器某些受限的容量仅可用于此优先级。必需。
+
 - **exempt** (ExemptPriorityLevelConfiguration)
 
   <!--
   `exempt` specifies how requests are handled for an exempt priority level. This field MUST be empty if `type` is `"Limited"`. This field MAY be non-empty if `type` is `"Exempt"`. If empty and `type` is `"Exempt"` then the default values for `ExemptPriorityLevelConfiguration` apply.
   -->
-  
+
   `exempt` 指定了对于豁免优先级的请求如何处理。
   如果 `type` 取值为 `"Limited"`，则此字段必须为空。
   如果 `type` 取值为 `"Exempt"`，则此字段可以非空。
@@ -98,13 +110,13 @@ PriorityLevelConfigurationSpec 指定一个优先级的配置。
   - **exempt.lendablePercent** (int32)
 
     <!--
-    `lendablePercent` prescribes the fraction of the level's NominalCL that can be borrowed by other priority levels.  This value of this field must be between 0 and 100, inclusive, and it defaults to 0. The number of seats that other levels can borrow from this level, known as this level's LendableConcurrencyLimit (LendableCL), is defined as follows.
+    `lendablePercent` prescribes the fraction of the level's NominalCL that can be borrowed by other priority levels. This value of this field must be between 0 and 100, inclusive, and it defaults to 0. The number of seats that other levels can borrow from this level, known as this level's LendableConcurrencyLimit (LendableCL), is defined as follows.
     -->
 
     `lendablePercent` 规定该级别的 NominalCL 可被其他优先级租借的百分比。
     此字段的值必须在 0 到 100 之间，包括 0 和 100，默认为 0。
     其他级别可以从该级别借用的席位数被称为此级别的 LendableConcurrencyLimit（LendableCL），定义如下。
-    
+  
     LendableCL(i) = round( NominalCL(i) * lendablePercent(i)/100.0 )
 
   - **exempt.nominalConcurrencyShares** (int32)
@@ -116,15 +128,15 @@ PriorityLevelConfigurationSpec 指定一个优先级的配置。
     `nominalConcurrencyShares`（NCS）也被用来计算该级别的 NominalConcurrencyLimit（NominalCL）。
     字段值是为该优先级保留的执行席位的数量。这一设置不限制此优先级别的调度行为，
     但会通过借用机制影响其他优先级。服务器的并发限制（ServerCL）会按照各个优先级的 NCS 值按比例分配：
-    
-    NominalCL(i)  = ceil( ServerCL * NCS(i) / sum_ncs ) sum_ncs = sum[priority level k] NCS(k)
-    
+  
+    NominalCL(i) = ceil( ServerCL * NCS(i) / sum_ncs ) sum_ncs = sum[priority level k] NCS(k)
+  
     <!--
     Bigger numbers mean a larger nominal concurrency limit, at the expense of every other priority level. This field has a default value of zero.
     -->
 
     较大的数字意味着更大的标称并发限制，且将影响其他优先级。此字段的默认值为零。
-  
+
 <!--
 - **limited** (LimitedPriorityLevelConfiguration)
 
@@ -136,28 +148,28 @@ PriorityLevelConfigurationSpec 指定一个优先级的配置。
     - What should be done with requests that exceed the limit?*
 -->
 - **limited** (LimitedPriorityLevelConfiguration)
-  
+
   `limited` 指定如何为某个受限的优先级处理请求。
   当且仅当 `type` 是 `"Limited"` 时，此字段必须为非空。
-  
+
   <a name="LimitedPriorityLevelConfiguration"></a>
   LimitedPriorityLevelConfiguration 指定如何处理需要被限制的请求。它解决两个问题：
 
   - 如何限制此优先级的请求？
   - 应如何处理超出此限制的请求？
-  
+
   <!--
   - **limited.borrowingLimitPercent** (int32)
 
     `borrowingLimitPercent`, if present, configures a limit on how many seats this priority level can borrow from other priority levels. The limit is known as this level's BorrowingConcurrencyLimit (BorrowingCL) and is a limit on the total number of seats that this level may borrow at any one time. This field holds the ratio of that limit to the level's nominal concurrency limit. When this field is non-nil, it must hold a non-negative integer and the limit is calculated as follows.
-    
+  
     BorrowingCL(i) = round( NominalCL(i) * borrowingLimitPercent(i)/100.0 )
-    
+  
     The value of this field can be more than 100, implying that this priority level can borrow a number of seats that is greater than its own nominal concurrency limit (NominalCL). When this field is left `nil`, the limit is effectively infinite.
   -->
-  
+
   - **limited.borrowingLimitPercent** (int32)
-   
+  
     `borrowingLimitPercent` 配置如果存在，则可用来限制此优先级可以从其他优先级中租借多少资源。
     该限制被称为该级别的 BorrowingConcurrencyLimit（BorrowingCL），它限制了该级别可以同时租借的资源总数。
     该字段保存了该限制与该级别标称并发限制之比。当此字段非空时，必须为正整数，并按以下方式计算限制值：
@@ -165,15 +177,15 @@ PriorityLevelConfigurationSpec 指定一个优先级的配置。
     BorrowingCL(i) = round(NominalCL(i) * borrowingLimitPercent(i) / 100.0)
 
     该字段值可以大于100，表示该优先级可以大于自己标称并发限制（NominalCL）。当此字段为 `nil` 时，表示无限制。
-  
+
   <!--
   - **limited.lendablePercent** (int32)
 
     `lendablePercent` prescribes the fraction of the level's NominalCL that can be borrowed by other priority levels. The value of this field must be between 0 and 100, inclusive, and it defaults to 0. The number of seats that other levels can borrow from this level, known as this level's LendableConcurrencyLimit (LendableCL), is defined as follows.
-    
+  
     LendableCL(i) = round( NominalCL(i) * lendablePercent(i)/100.0 )
   -->
-  
+
   - **limited.lendablePercent** (int32)
 
     `lendablePercent` 规定了 NominalCL 可被其他优先级租借资源数百分比。
@@ -181,7 +193,7 @@ PriorityLevelConfigurationSpec 指定一个优先级的配置。
     其他级别可以从该级别借用的资源数被称为此级别的 LendableConcurrencyLimit（LendableCL），定义如下。
 
     LendableCL(i) = round( NominalCL(i) * lendablePercent(i)/100.0 )
-  
+
   <!--
   - **limited.limitResponse** (LimitResponse)
 
@@ -192,12 +204,12 @@ PriorityLevelConfigurationSpec 指定一个优先级的配置。
   -->
 
   - **limited.limitResponse** (LimitResponse)
-    
+
     `limitResponse` 指示如何处理当前无法立即执行的请求。
-    
+
     <a name="LimitResponse"></a>
     **LimitResponse 定义如何处理当前无法立即执行的请求。**
-    
+
     <!--
     - **limited.limitResponse.type** (string), required
 
@@ -205,11 +217,11 @@ PriorityLevelConfigurationSpec 指定一个优先级的配置。
     -->
 
     - **limited.limitResponse.type** (string)，必需
-      
+    
       `type` 是 “Queue” 或 “Reject”。此字段必须设置。
       “Queue” 意味着在到达时无法被执行的请求可以被放到队列中，直到它们被执行或者队列长度超出限制为止。
       “Reject” 意味着到达时无法执行的请求将被拒绝。
-    
+  
     <!--
     - **limited.limitResponse.queuing** (QueuingConfiguration)
 
@@ -229,18 +241,18 @@ PriorityLevelConfigurationSpec 指定一个优先级的配置。
       <!--
       - **limited.limitResponse.queuing.handSize** (int32)
 
-        `handSize` is a small positive number that configures the shuffle sharding of requests into queues.  When enqueuing a request at this priority level the request's flow identifier (a string pair) is hashed and the hash value is used to shuffle the list of queues and deal a hand of the size specified here.  The request is put into one of the shortest queues in that hand. `handSize` must be no larger than `queues`, and should be significantly smaller (so that a few heavy flows do not saturate most of the queues).  See the user-facing documentation for more extensive guidance on setting this field.  This field has a default value of 8.
+        `handSize` is a small positive number that configures the shuffle sharding of requests into queues. When enqueuing a request at this priority level the request's flow identifier (a string pair) is hashed and the hash value is used to shuffle the list of queues and deal a hand of the size specified here.  The request is put into one of the shortest queues in that hand. `handSize` must be no larger than `queues`, and should be significantly smaller (so that a few heavy flows do not saturate most of the queues).  See the user-facing documentation for more extensive guidance on setting this field.  This field has a default value of 8.
       -->
 
       - **limited.limitResponse.queuing.handSize** (int32)
-        
+
         `handSize` 是一个小的正数，用于配置如何将请求随机分片到队列中。
         当以该优先级将请求排队时，将对请求的流标识符（字符串对）进行哈希计算，
         该哈希值用于打乱队列队列的列表，并处理此处指定的一批请求。
         请求被放入这一批次中最短的队列中。
         `handSize` 不得大于 `queues`，并且应该明显更小（以便几个大的流量不会使大多数队列饱和）。
         有关设置此字段的更多详细指导，请参阅面向用户的文档。此字段的默认值为 8。
-      
+    
       <!--
       - **limited.limitResponse.queuing.queueLengthLimit** (int32)
 
@@ -256,7 +268,7 @@ PriorityLevelConfigurationSpec 指定一个优先级的配置。
         `queueLengthLimit` 是任意时刻允许在此优先级的给定队列中等待的请求数上限；
         额外的请求将被拒绝。
         此值必须是正数。如果未指定，则默认为 50。
-      
+    
       - **limited.limitResponse.queuing.queues** (int32)
         
         `queues` 是这个优先级的队列数。此队列在每个 API 服务器上独立存在。此值必须是正数。
@@ -267,9 +279,9 @@ PriorityLevelConfigurationSpec 指定一个优先级的配置。
   - **limited.nominalConcurrencyShares** (int32)
 
     `nominalConcurrencyShares` (NCS) contributes to the computation of the NominalConcurrencyLimit (NominalCL) of this level. This is the number of execution seats available at this priority level. This is used both for requests dispatched from this priority level as well as requests dispatched from other priority levels borrowing seats from this level. The server's concurrency limit (ServerCL) is divided among the Limited priority levels in proportion to their NCS values:
-    
+  
     NominalCL(i)  = ceil( ServerCL * NCS(i) / sum_ncs ) sum_ncs = sum[priority level k] NCS(k)
-    
+
     Bigger numbers mean a larger nominal concurrency limit, at the expense of every other priority level.
   -->
 
@@ -284,18 +296,6 @@ PriorityLevelConfigurationSpec 指定一个优先级的配置。
 
     较大的数字意味着更大的标称并发限制，但是这将牺牲其他优先级的资源。
 
-<!--
-- **type** (string), required
-
-  `type` indicates whether this priority level is subject to limitation on request execution.  A value of `"Exempt"` means that requests of this priority level are not subject to a limit (and thus are never queued) and do not detract from the capacity made available to other priority levels.  A value of `"Limited"` means that (a) requests of this priority level _are_ subject to limits and (b) some of the server's limited capacity is made available exclusively to this priority level. Required.
--->
-- **type** (string)，必需
-  
-  `type` 指示此优先级是否遵从有关请求执行的限制。
-  取值为 `"Exempt"` 意味着此优先级的请求不遵从某个限制（且因此从不排队）且不会减损其他优先级可用的容量。
-  取值为 `"Limited"` 意味着 (a) 此优先级的请求遵从这些限制且
-  (b) 服务器某些受限的容量仅可用于此优先级。必需。
-
 ## PriorityLevelConfigurationStatus {#PriorityLevelConfigurationStatus}
 
 <!--
@@ -309,7 +309,7 @@ PriorityLevelConfigurationStatus 表示 “请求优先级” 的当前状况。
 - **conditions** ([]PriorityLevelConfigurationCondition)
 
   *Patch strategy: merge on key `type`*
-  
+
   *Map: unique values on key type will be kept during a merge*
   
   `conditions` is the current state of "request-priority".
@@ -509,6 +509,7 @@ GET /apis/flowcontrol.apiserver.k8s.io/v1/prioritylevelconfigurations
 - **resourceVersion** (*in query*): string
 - **resourceVersionMatch** (*in query*): string
 - **sendInitialEvents** (*in query*): boolean
+- **shardSelector** (*in query*): string
 - **timeoutSeconds** (*in query*): integer
 - **watch** (*in query*): boolean
 -->
@@ -549,6 +550,10 @@ GET /apis/flowcontrol.apiserver.k8s.io/v1/prioritylevelconfigurations
 - **sendInitialEvents**（**查询参数**）：boolean
 
   <a href="{{< ref "../common-parameters/common-parameters#sendInitialEvents" >}}">sendInitialEvents</a>
+  
+- **shardSelector** (**查询参数**): string
+
+  <a href="{{< ref "../common-parameters/common-parameters#shardSelector" >}}">shardSelector</a>
 
 - **timeoutSeconds**（**查询参数**）：integer
   
@@ -933,6 +938,7 @@ DELETE /apis/flowcontrol.apiserver.k8s.io/v1/prioritylevelconfigurations
 - **resourceVersion** (*in query*): string
 - **resourceVersionMatch** (*in query*): string
 - **sendInitialEvents** (*in query*): boolean
+- **shardSelector** (*in query*): string
 - **timeoutSeconds** (*in query*): integer
 -->
 #### 参数
@@ -986,6 +992,10 @@ DELETE /apis/flowcontrol.apiserver.k8s.io/v1/prioritylevelconfigurations
 - **sendInitialEvents**（**查询参数**）：boolean
 
   <a href="{{< ref "../common-parameters/common-parameters#sendInitialEvents" >}}">sendInitialEvents</a>
+
+- **shardSelector** (**查询参数**): string
+
+  <a href="{{< ref "../common-parameters/common-parameters#shardSelector" >}}">shardSelector</a>
 
 - **timeoutSeconds**（**查询参数**）：integer
   
