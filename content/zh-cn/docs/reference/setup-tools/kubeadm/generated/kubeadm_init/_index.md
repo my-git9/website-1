@@ -269,15 +269,13 @@ Don't apply any changes; just output what would be done.
 <p>
 <!--
 A set of key=value pairs that describe feature gates for various features. Options are:<br/>
-ControlPlaneKubeletLocalMode=true|false (default=true)<br/>
-NodeLocalCRISocket=true|false (BETA - default=true)<br/>
+NodeLocalCRISocket=true|false (default=true)<br/>
 PublicKeysECDSA=true|false (DEPRECATED - default=false)<br/>
 RootlessControlPlane=true|false (ALPHA - default=false)
 -->
 一组用来描述各种特性门控的键值（key=value）对。选项是：<br/>
-ControlPlaneKubeletLocalMode=true|false (默认值=true)<br/>
-NodeLocalCRISocket=true|false (BETA - 默认值=true)<br/>
-PublicKeysECDSA=true|false (DEPRECATED - 默认值=false)<br/>
+NodeLocalCRISocket=true|false (默认值=true)<br/>
+PublicKeysECDSA=true|false (已弃用 - 默认值=false)<br/>
 RootlessControlPlane=true|false (ALPHA - 默认值=false)
 </p>
 </td>
@@ -569,7 +567,7 @@ Upload control-plane certificates to the kubeadm-certs Secret.
 <!--
 [EXPERIMENTAL] The path to the 'real' host root filesystem.
 -->
-[实验] 到'真实'主机根文件系统的路径。
+[实验性] 到'真实'主机根文件系统的路径。
 </p>
 </td>
 </tr>

@@ -26,14 +26,17 @@ kubeadm config images list [flags]
 
 <tr>
 <td colspan="2">
-<!-- --allow-missing-template-keys&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: true -->
+<!--
+--allow-missing-template-keys&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: true
+-->
 --allow-missing-template-keys&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;默认值：true
 </td>
 </tr>
 <tr>
-<td></td><td style="line-height: 130%; word-wrap: break-word;">
+<td></td>
+<td style="line-height: 130%; word-wrap: break-word;">
 <p>
-<!-- 
+<!--
 If true, ignore any errors in templates when a field or map key is missing in the template. Only applies to golang and jsonpath output formats.
 -->
 如果设置为 true，则在模板中缺少字段或哈希表的键时忽略模板中的任何错误。
@@ -46,7 +49,8 @@ If true, ignore any errors in templates when a field or map key is missing in th
 <td colspan="2">--config string</td>
 </tr>
 <tr>
-<td></td><td style="line-height: 130%; word-wrap: break-word;">
+<td></td>
+<td style="line-height: 130%; word-wrap: break-word;">
 <p>
 <!--
 Path to a kubeadm configuration file.
@@ -57,17 +61,22 @@ kubeadm 配置文件的路径。
 </tr>
 <tr>
 <td colspan="2">
-<!-- -o, --experimental-output string&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: "text" -->
+<!--
+-o, --experimental-output string&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default: "text"
+-->
 -o, --experimental-output string&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;默认值："text"
 </td>
 </tr>
 <tr>
-<td></td><td style="line-height: 130%; word-wrap: break-word;">
+<td></td>
+<td style="line-height: 130%; word-wrap: break-word;">
 <p>
-<!--  
+<!-- 
 Output format. One of: text|json|yaml|kyaml|go-template|go-template-file|template|templatefile|jsonpath|jsonpath-as-json|jsonpath-file.
 -->
-输出格式：text|json|yaml|kyaml|go-template|go-template-file|template|templatefile|jsonpath|jsonpath-as-json|jsonpath-file 其中之一。
+输出格式：
+text|json|yaml|kyaml|go-template|go-template-file|template|templatefile|jsonpath|jsonpath-as-json|jsonpath-file
+其中之一。
 </p>
 </td>
 </tr>
@@ -76,19 +85,18 @@ Output format. One of: text|json|yaml|kyaml|go-template|go-template-file|templat
 <td colspan="2">--feature-gates string</td>
 </tr>
 <tr>
-<td></td><td style="line-height: 130%; word-wrap: break-word;">
+<td></td>
+<td style="line-height: 130%; word-wrap: break-word;">
 <p>
 <!--
 A set of key=value pairs that describe feature gates for various features. Options are:<br/>
-ControlPlaneKubeletLocalMode=true|false (default=true)<br/>
-NodeLocalCRISocket=true|false (BETA - default=true)<br/>
+NodeLocalCRISocket=true|false (default=true)<br/>
 PublicKeysECDSA=true|false (DEPRECATED - default=false)<br/>
 RootlessControlPlane=true|false (ALPHA - default=false)
 -->
 一组键值对（key=value），用于描述各种特性。这些选项是：<br/>
-ControlPlaneKubeletLocalMode=true|false (默认值=true)<br/>
-NodeLocalCRISocket=true|false (BETA - 默认值=true)<br/>
-PublicKeysECDSA=true|false (DEPRECATED - 默认值=false)<br/>
+NodeLocalCRISocket=true|false (默认值=true)<br/>
+PublicKeysECDSA=true|false (已弃用 - 默认值=false)<br/>
 RootlessControlPlane=true|false (ALPHA - 默认值=false)
 </p>
 </td>
@@ -98,7 +106,8 @@ RootlessControlPlane=true|false (ALPHA - 默认值=false)
 <td colspan="2">-h, --help</td>
 </tr>
 <tr>
-<td></td><td style="line-height: 130%; word-wrap: break-word;">
+<td></td>
+<td style="line-height: 130%; word-wrap: break-word;">
 <p>
 <!--
 help for list
@@ -117,7 +126,8 @@ list 操作的帮助命令。
 </td>
 </tr>
 <tr>
-<td></td><td style="line-height: 130%; word-wrap: break-word;">
+<td></td>
+<td style="line-height: 130%; word-wrap: break-word;">
 <p>
 <!--
 Choose a container registry to pull control plane images from
@@ -136,7 +146,8 @@ Choose a container registry to pull control plane images from
 </td>
 </tr>
 <tr>
-<td></td><td style="line-height: 130%; word-wrap: break-word;">
+<td></td>
+<td style="line-height: 130%; word-wrap: break-word;">
 <p>
 <!--
 Choose a specific Kubernetes version for the control plane.
@@ -155,12 +166,13 @@ Choose a specific Kubernetes version for the control plane.
 </td>
 </tr>
 <tr>
-<td></td><td style="line-height: 130%; word-wrap: break-word;">
+<td></td>
+<td style="line-height: 130%; word-wrap: break-word;">
 <p>
 <!--
 If true, keep the managedFields when printing objects in JSON or YAML format.
 -->
-如果为 true，则在以 JSON 或 YAML 格式打印对象时保留 managedFields。
+如果为 true，则在以 JSON 或 YAML 格式打印对象时保留 <code>managedFields</code>。
 </p>
 </td>
 </tr>
@@ -189,7 +201,8 @@ If true, keep the managedFields when printing objects in JSON or YAML format.
 </td>
 </tr>
 <tr>
-<td></td><td style="line-height: 130%; word-wrap: break-word;">
+<td></td>
+<td style="line-height: 130%; word-wrap: break-word;">
 <p>
 <!--
 The kubeconfig file to use when talking to the cluster. If the flag is not set, a set of standard locations can be searched for an existing kubeconfig file.
@@ -204,12 +217,13 @@ The kubeconfig file to use when talking to the cluster. If the flag is not set, 
 <td colspan="2">--rootfs string</td>
 </tr>
 <tr>
-<td></td><td style="line-height: 130%; word-wrap: break-word;">
+<td></td>
+<td style="line-height: 130%; word-wrap: break-word;">
 <p>
 <!--
 [EXPERIMENTAL] The path to the 'real' host root filesystem.
 -->
-[实验] 到“真实”主机根文件系统的路径。
+[实验性] 到“真实”主机根文件系统的路径。
 </p>
 </td>
 </tr>
