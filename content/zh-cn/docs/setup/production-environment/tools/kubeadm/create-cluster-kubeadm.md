@@ -206,7 +206,8 @@ Kubernetes 组件不接受自定义网络接口作为选项，因此必须将自
 If the host does not have a default gateway and if a custom IP address is not passed
 to a Kubernetes component, the component may exit with an error.
 -->
-如果主机没有默认网关，并且没有将自定义 IP 地址传递给 Kubernetes 组件，此组件可能会因错误而退出。
+如果主机没有默认网关，并且没有将自定义 IP 地址传递给 Kubernetes
+组件，此组件可能会因错误而退出。
 {{< /note >}}
 
 <!--
@@ -277,18 +278,19 @@ Kubeadm has commands that can help you pre-pull the required images
 when creating a cluster without an internet connection on its nodes.
 See [Running kubeadm without an internet connection](/docs/reference/setup-tools/kubeadm/kubeadm-init#without-internet-connection)
 for more details.
-
-Kubeadm allows you to use a custom image repository for the required images.
-See [Using custom images](/docs/reference/setup-tools/kubeadm/kubeadm-init#custom-images)
-for more details.
 -->
 这个步骤是可选的，只适用于你希望 `kubeadm init` 和 `kubeadm join` 不去下载存放在
 `registry.k8s.io` 上的默认容器镜像的情况。
-
+ 
 当你在离线的节点上创建一个集群的时候，kubeadm 有一些命令可以帮助你预拉取所需的镜像。
 阅读[离线运行 kubeadm](/zh-cn/docs/reference/setup-tools/kubeadm/kubeadm-init#without-internet-connection)
 获取更多的详情。
 
+<!--
+Kubeadm allows you to use a custom image repository for the required images.
+See [Using custom images](/docs/reference/setup-tools/kubeadm/kubeadm-init#custom-images)
+for more details.
+-->
 kubeadm 允许你给所需要的镜像指定一个自定义的镜像仓库。
 阅读[使用自定义镜像](/zh-cn/docs/reference/setup-tools/kubeadm/kubeadm-init#custom-images)获取更多的详情。
 
@@ -333,7 +335,8 @@ communicates with).
    [Installing a runtime](/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#installing-runtime).
 -->
 3. （可选）`kubeadm` 试图通过使用已知的端点列表来检测容器运行时。
-   使用不同的容器运行时或在预配置的节点上安装了多个容器运行时，请为 `kubeadm init` 指定 `--cri-socket` 参数。
+   使用不同的容器运行时或在预配置的节点上安装了多个容器运行时，
+   请为 `kubeadm init` 指定 `--cri-socket` 参数。
    请参阅[安装运行时](/zh-cn/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#installing-runtime)。
 
 <!--
@@ -380,7 +383,8 @@ This will allow you to pass `--control-plane-endpoint=cluster-endpoint` to `kube
 `kubeadm join`. Later you can modify `cluster-endpoint` to point to the address of your load-balancer in a
 high availability scenario.
 -->
-其中 `192.168.0.102` 是此节点的 IP 地址，`cluster-endpoint` 是映射到该 IP 的自定义 DNS 名称。
+其中 `192.168.0.102` 是此节点的 IP 地址，`cluster-endpoint`
+是映射到该 IP 的自定义 DNS 名称。
 这将允许你将 `--control-plane-endpoint=cluster-endpoint` 传递给 `kubeadm init`，
 并将相同的 DNS 名称传递给 `kubeadm join`。稍后你可以修改 `cluster-endpoint`
 以指向高可用性方案中的负载均衡器的地址。
@@ -389,7 +393,8 @@ high availability scenario.
 Turning a single control plane cluster created without `--control-plane-endpoint` into a highly available cluster
 is not supported by kubeadm.
 -->
-kubeadm 不支持将没有 `--control-plane-endpoint` 参数的单个控制平面集群转换为高可用性集群。
+kubeadm 不支持将没有 `--control-plane-endpoint`
+参数的单个控制平面集群转换为高可用性集群。
 
 <!--
 ### More information
@@ -399,7 +404,8 @@ kubeadm 不支持将没有 `--control-plane-endpoint` 参数的单个控制平�
 <!--
 For more information about `kubeadm init` arguments, see the [kubeadm reference guide](/docs/reference/setup-tools/kubeadm/).
 -->
-有关 `kubeadm init` 参数的更多信息，请参见 [kubeadm 参考指南](/zh-cn/docs/reference/setup-tools/kubeadm/)。
+有关 `kubeadm init` 参数的更多信息，请参见
+[kubeadm 参考指南](/zh-cn/docs/reference/setup-tools/kubeadm/)。
 
 <!--
 To configure `kubeadm init` with a configuration file see
@@ -592,7 +598,8 @@ Cluster DNS (CoreDNS) will not start up before a network is installed.**
 -->
 - 如果要为集群使用 IPv6（双协议栈或仅单协议栈 IPv6 网络），
   请确保你的 Pod 网络插件支持 IPv6。
-  IPv6 支持已在 CNI [v0.6.0](https://github.com/containernetworking/cni/releases/tag/v0.6.0) 版本中添加。
+  IPv6 支持已在 CNI [v0.6.0](https://github.com/containernetworking/cni/releases/tag/v0.6.0)
+  版本中添加。
 {{< /caution >}}
 
 {{< note >}}
@@ -618,7 +625,8 @@ See a list of add-ons that implement the
 [Kubernetes networking model](/docs/concepts/cluster-administration/networking/#how-to-implement-the-kubernetes-network-model).
 -->
 请参阅实现
-[Kubernetes 网络模型](/zh-cn/docs/concepts/cluster-administration/networking/#how-to-implement-the-kubernetes-network-model)的附加组件列表。
+[Kubernetes 网络模型](/zh-cn/docs/concepts/cluster-administration/networking/#how-to-implement-the-kubernetes-network-model)
+的附加组件列表。
 
 <!--
 Please refer to the [Installing Addons](/docs/concepts/cluster-administration/addons/#networking-and-network-policy)
@@ -673,18 +681,36 @@ for `kubeadm`.
 <!--
 By default, kubeadm enables the [NodeRestriction](/docs/reference/access-authn-authz/admission-controllers/#noderestriction)
 admission controller that restricts what labels can be self-applied by kubelets on node registration.
-The admission controller documentation covers what labels are permitted to be used with the kubelet `--node-labels` option.
-The `node-role.kubernetes.io/control-plane` label is such a restricted label and kubeadm manually applies it using
-a privileged client after a node has been created. To do that manually you can do the same by using `kubectl label`
-and ensure it is using a privileged kubeconfig such as the kubeadm managed `/etc/kubernetes/admin.conf`.
+The admission controller documentation covers what labels are permitted to be used with the kubelet
+`--node-labels` option.
 -->
 默认情况下，kubeadm 启用
 [NodeRestriction](/zh-cn/docs/reference/access-authn-authz/admission-controllers/#noderestriction)
-准入控制器来限制 kubelet 在节点注册时可以应用哪些标签。准入控制器文档描述 kubelet `--node-labels` 选项允许使用哪些标签。
-其中 `node-role.kubernetes.io/control-plane` 标签就是这样一个受限制的标签，
-kubeadm 在节点创建后使用特权客户端手动应用此标签。
-你可以使用一个有特权的 kubeconfig，比如由 kubeadm 管理的 `/etc/kubernetes/admin.conf`，
-通过执行 `kubectl label` 来手动完成操作。
+准入控制器来限制 kubelet 在节点注册时可以应用哪些标签。
+准入控制器文档描述 kubelet `--node-labels` 选项允许使用哪些标签。
+
+{{< caution >}}
+<!--
+Because of the `NodeRestriction` admission controller, you **cannot** use the kubelet
+`--node-labels` flag to apply restricted labels (such as `node-role.kubernetes.io/*`) during initialization.
+
+If you attempt to add restricted labels by using this kubelet flag, the node will fail to register
+with the API server.
+-->
+由于 `NodeRestriction` 准入控制器的存在，
+你**不能**在初始化期间使用 kubelet 的 `--node-labels`
+标志来应用受限标签（例如 `node-role.kubernetes.io/*`）。
+
+如果你尝试使用此 kubelet 标志添加受限标签，节点将无法向 API 服务器注册。
+{{< /caution >}}
+
+<!--
+To apply these labels manually, you must use `kubectl label` after the node has joined the cluster.
+Ensure you are using a privileged kubeconfig, such as the kubeadm-managed `/etc/kubernetes/admin.conf`.
+-->
+要手动应用这些标签，必须在节点加入集群后使用 `kubectl label` 命令。
+请确保你使用的是特权 kubeconfig 文件，例如由 kubeadm 管理的
+`/etc/kubernetes/admin.conf` 文件。
 
 <!--
 ### Control plane node isolation
@@ -740,7 +766,13 @@ kubectl label nodes --all node.kubernetes.io/exclude-from-external-load-balancer
 
 See [Creating Highly Available Clusters with kubeadm](/docs/setup/production-environment/tools/kubeadm/high-availability/)
 for steps on creating a high availability kubeadm cluster by adding more control plane nodes.
+-->
+### 添加更多控制平面节点   {#adding-more-control-plane-nodes}
 
+请参阅[使用 kubeadm 创建高可用性集群](/zh-cn/docs/setup/production-environment/tools/kubeadm/high-availability/)，
+了解通过添加更多控制平面节点创建高可用性 kubeadm 集群的步骤。
+
+<!--
 ### Adding worker nodes {#join-nodes}
 
 The worker nodes are where your workloads run.
@@ -751,22 +783,8 @@ the `kubeadm join` command:
 * [Adding Linux worker nodes](/docs/tasks/administer-cluster/kubeadm/adding-linux-nodes/)
 * [Adding Windows worker nodes](/docs/tasks/administer-cluster/kubeadm/adding-windows-nodes/)
 -->
-### 添加更多控制平面节点   {#adding-more-control-plane-nodes}
-
-请参阅[使用 kubeadm 创建高可用性集群](/zh-cn/docs/setup/production-environment/tools/kubeadm/high-availability/)，
-了解通过添加更多控制平面节点创建高可用性 kubeadm 集群的步骤。
-
 ### 添加工作节点 {#join-nodes}
 
-<!--
-The worker nodes are where your workloads run.
-
-The following pages show how to add Linux and Windows worker nodes to the cluster by using
-the `kubeadm join` command:
-
-* [Adding Linux worker nodes](/docs/tasks/administer-cluster/kubeadm/adding-linux-nodes/)
-* [Adding Windows worker nodes](/docs/tasks/administer-cluster/kubeadm/adding-windows-nodes/)
--->
 工作节点是工作负载运行的地方。
 
 以下页面展示如何使用 `kubeadm join` 命令将 Linux 和 Windows 工作节点添加到集群：
@@ -809,7 +827,7 @@ privileges by using `kubectl create (cluster)rolebinding`.
 上面的示例假定为 root 用户启用了 SSH 访问。如果不是这种情况，
 你可以使用 `scp` 将 `admin.conf` 文件复制给其他允许访问的用户。
 
-admin.conf 文件为用户提供了对集群的超级用户特权。
+`admin.conf` 文件为用户提供了对集群的超级用户特权。
 该文件应谨慎使用。对于普通用户，建议生成一个你为其授予特权的唯一证书。
 你可以使用 `kubeadm kubeconfig user --client-name <CN>` 命令执行此操作。
 该命令会将 KubeConfig 文件打印到 STDOUT，你应该将其保存到文件并分发给用户。
@@ -891,7 +909,8 @@ kubeadm reset
 The reset process does not reset or clean up iptables rules or IPVS tables.
 If you wish to reset iptables, you must do so manually:
 -->
-重置过程不会重置或清除 iptables 规则或 IPVS 表。如果你希望重置 iptables，则必须手动进行：
+重置过程不会重置或清除 iptables 规则或 IPVS 表。如果你希望重置 iptables，
+则必须手动进行：
 
 ```bash
 iptables -F && iptables -t nat -F && iptables -t mangle -F && iptables -X
@@ -942,7 +961,8 @@ reference documentation for more information about this subcommand and its
 options.
 -->
 有关此子命令及其选项的更多信息，请参见
-[`kubeadm reset`](/zh-cn/docs/reference/setup-tools/kubeadm/kubeadm-reset/) 参考文档。
+[`kubeadm reset`](/zh-cn/docs/reference/setup-tools/kubeadm/kubeadm-reset/)
+参考文档。
 
 <!--
 ## Version skew policy {#version-skew-policy}
@@ -973,7 +993,8 @@ kubeadm 可以与 Kubernetes 组件一起使用，这些组件的版本与 kubea
 Kubernetes 版本可以通过使用 `--kubeadm init` 的 `--kubernetes-version` 标志或使用 `--config` 时的
 [`ClusterConfiguration.kubernetesVersion`](/zh-cn/docs/reference/config-api/kubeadm-config.v1beta4/)
 字段指定给 kubeadm。
-这个选项将控制 kube-apiserver、kube-controller-manager、kube-scheduler 和 kube-proxy 的版本。
+这个选项将控制 kube-apiserver、kube-controller-manager、kube-scheduler
+和 kube-proxy 的版本。
 
 <!--
 Example:
