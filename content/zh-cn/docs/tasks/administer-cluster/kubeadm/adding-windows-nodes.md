@@ -76,7 +76,7 @@ To install containerd, first run the following command:
 
   ```PowerShell
   curl.exe -LO https://raw.githubusercontent.com/kubernetes-sigs/sig-windows-tools/master/hostprocess/Install-Containerd.ps1
-  ``````
+  ```
 
 <!--
 Then run the following command, but first replace `CONTAINERD_VERSION` with a recent release
@@ -279,4 +279,4 @@ See [Install and Set Up kubectl on Windows](/docs/tasks/tools/install-kubectl-wi
 <!--
 * See how to [add Linux worker nodes](/docs/tasks/administer-cluster/kubeadm/adding-linux-nodes/).
 -->
-参见如何 [添加 Linux 工作节点](/zh-cn/docs/tasks/administer-cluster/kubeadm/adding-linux-nodes/)。
+参见如何[添加 Linux 工作节点](/zh-cn/docs/tasks/administer-cluster/kubeadm/adding-linux-nodes/)。
