@@ -22,8 +22,9 @@ mechanism. [Gateway API](https://gateway-api.sigs.k8s.io/) is an {{<glossary_too
 containing API [kinds](https://gateway-api.sigs.k8s.io/references/spec/) that provide dynamic infrastructure
 provisioning and advanced traffic routing.
 -->
-[Gateway API](https://gateway-api.sigs.k8s.io/) 通过使用可扩展的、角色导向的、
-协议感知的配置机制来提供网络服务。它是一个{{<glossary_tooltip text="附加组件" term_id="addons">}}，
+[Gateway API](https://gateway-api.sigs.k8s.io/)
+通过使用可扩展的、角色导向的、协议感知的配置机制来提供网络服务。
+它是一个{{<glossary_tooltip text="附加组件" term_id="addons">}}，
 包含可提供动态基础设施配置和高级流量路由的
 API [类别](https://gateway-api.sigs.k8s.io/references/spec/)。
 
@@ -49,10 +50,10 @@ Gateway API 的设计和架构遵从以下原则：
     concerned with application-level configuration and [Service](/docs/concepts/services-networking/service/)
     composition.
 -->
-* **角色导向：** Gateway API 类别是基于负责管理 Kubernetes 服务网络的组织角色建模的：
-  * **基础设施提供者：** 管理使用多个独立集群为多个租户提供服务的基础设施，例如，云提供商。
-  * **集群操作员：** 管理集群，通常关注策略、网络访问、应用程序权限等。
-  * **应用程序开发人员：** 管理在集群中运行的应用程序，通常关注应用程序级配置和
+* **角色导向：**Gateway API 类别是基于负责管理 Kubernetes 服务网络的组织角色建模的：
+  * **基础设施提供者：**管理使用多个独立集群为多个租户提供服务的基础设施，例如，云提供商。
+  * **集群操作员：**管理集群，通常关注策略、网络访问、应用程序权限等。
+  * **应用程序开发人员：**管理在集群中运行的应用程序，通常关注应用程序级配置和
     [Service](/zh-cn/docs/concepts/services-networking/service/) 组合。
 
 <!-- 
@@ -64,11 +65,11 @@ Gateway API 的设计和架构遵从以下原则：
 * __Extensible:__ Gateway allows for custom resources to be linked at various layers of the API.
   This makes granular customization possible at the appropriate places within the API structure.
 -->
-* **可移植：** Gateway API 规范用[自定义资源](/zh-cn/docs/concepts/extend-kubernetes/api-extension/custom-resources)来定义，
+* **可移植：**Gateway API 规范用[自定义资源](/zh-cn/docs/concepts/extend-kubernetes/api-extension/custom-resources)来定义，
   并受到许多[实现](https://gateway-api.sigs.k8s.io/implementations/)的支持。
-* **表达能力强：** Gateway API 类别支持常见流量路由场景的功能，例如基于标头的匹配、流量加权以及其他只能在
+* **表达能力强：**Gateway API 类别支持常见流量路由场景的功能，例如基于标头的匹配、流量加权以及其他只能在
   [Ingress](/zh-cn/docs/concepts/services-networking/ingress/) 中使用自定义注解才能实现的功能。
-* **可扩展的：** Gateway 允许在 API 的各个层链接自定义资源。这使得在 API 结构内的适当位置进行精细定制成为可能。
+* **可扩展的：**Gateway 允许在 API 的各个层链接自定义资源。这使得在 API 结构内的适当位置进行精细定制成为可能。
 
 <!-- 
 ## Resource model
@@ -89,11 +90,11 @@ Gateway API 具有四种稳定的 API 类别：
   representation of backend network endpoints. These endpoints are often represented as a
   {{<glossary_tooltip text="Service" term_id="service">}}.
 -->
-* **GatewayClass：** 定义一组具有配置相同的网关，由实现该类的控制器管理。
+* **GatewayClass：**定义一组具有配置相同的网关，由实现该类的控制器管理。
 
-* **Gateway：** 定义流量处理基础设施（例如云负载均衡器）的一个实例。
+* **Gateway：**定义流量处理基础设施（例如云负载均衡器）的一个实例。
 
-* **HTTPRoute：** 定义特定于 HTTP 的规则，用于将流量从 Gateway 监听器映射到后端网络端点的某种呈现。
+* **HTTPRoute：**定义特定于 HTTP 的规则，用于将流量从 Gateway 监听器映射到后端网络端点的某种呈现。
   这些端点通常表示为 {{<glossary_tooltip text="Service" term_id="service">}}。
 
 <!--
@@ -101,7 +102,7 @@ Gateway API 具有四种稳定的 API 类别：
 representation of backend network endpoints. These endpoints are often represented as a
   {{<glossary_tooltip text="Service" term_id="service">}}.
 -->
-* **GRPCRoute：** 定义特定于 gRPC 的规则，用于将流量从 Gateway 监听器映射到后端网络端点的某种呈现。
+* **GRPCRoute：**定义特定于 gRPC 的规则，用于将流量从 Gateway 监听器映射到后端网络端点的某种呈现。
   这些端点通常表示为 {{<glossary_tooltip text="Service" term_id="service">}}。
 
 <!-- 
@@ -125,17 +126,15 @@ The following figure illustrates the relationships of the three stable Gateway A
 
 {{< figure src="/docs/images/gateway-kind-relationships.svg" alt="此图呈现的是三个稳定的 Gateway API 类别之间的关系" class="diagram-medium" >}}
 
-<!-- 
 ### GatewayClass {#api-kind-gateway-class}
 
+<!--
 Gateways can be implemented by different controllers, often with different configurations. A Gateway
 must reference a GatewayClass that contains the name of the controller that implements the
 class.
 
 A minimal GatewayClass example:
 -->
-### GatewayClass {#api-kind-gateway-class}
-
 Gateway 可以由不同的控制器实现，通常具有不同的配置。
 Gateway 必须引用某 GatewayClass，而后者中包含实现该类的控制器的名称。
 
@@ -165,9 +164,9 @@ reference for a full definition of this API kind.
 有关此 API 类别的完整定义，请参阅
 [GatewayClass](https://gateway-api.sigs.k8s.io/references/spec/#gateway.networking.k8s.io/v1.GatewayClass)。
 
-<!-- 
 ### Gateway {#api-kind-gateway}
 
+<!--
 A Gateway describes an instance of traffic handling infrastructure. It defines a network endpoint
 that can be used for processing traffic, i.e. filtering, balancing, splitting, etc. for backends
 such as a Service. For example, a Gateway may represent a cloud load balancer or an in-cluster proxy
@@ -175,8 +174,6 @@ server that is configured to accept HTTP traffic.
 
 A typical Gateway resource example:
 -->
-### Gateway {#api-kind-gateway}
-
 Gateway 用来描述流量处理基础设施的一个实例。Gateway 定义了一个网络端点，该端点可用于处理流量，
 即对 Service 等后端进行过滤、平衡、拆分等。
 例如，Gateway 可以代表某个云负载均衡器，或配置为接受 HTTP 流量的集群内代理服务器。
@@ -214,7 +211,8 @@ reference for a full definition of this API kind.
 由于未指定 `addresses` 字段，因此对应实现的控制器负责将地址或主机名设置到 Gateway 之上。
 该地址用作网络端点，用于处理路由中定义的后端网络端点的流量。
 
-有关此类 API 的完整定义，请参阅 [Gateway](https://gateway-api.sigs.k8s.io/references/spec/#gateway.networking.k8s.io/v1.Gateway)。
+有关此类 API 的完整定义，请参阅
+[Gateway](https://gateway-api.sigs.k8s.io/references/spec/#gateway.networking.k8s.io/v1.Gateway)。
 
 {{< note >}}
 <!--
@@ -224,9 +222,9 @@ By default, a Gateway only accepts Routes from the same namespace. Cross-namespa
 如果需要跨命名空间的 Route，则必须通过配置 `allowedRoutes` 来显式允许。
 {{< /note >}}
 
-<!-- 
 ### HTTPRoute {#api-kind-httproute}
 
+<!--
 The HTTPRoute kind specifies routing behavior of HTTP requests from a Gateway listener to backend network
 endpoints. For a Service backend, an implementation may represent the backend network endpoint as a Service
 IP or the backing EndpointSlices of the Service. An HTTPRoute represents configuration that is applied to the
@@ -235,8 +233,6 @@ traffic routes in a cloud load balancer or in-cluster proxy server.
 
 A typical HTTPRoute example:
 -->
-### HTTPRoute {#api-kind-httproute}
-
 HTTPRoute 类别指定从 Gateway 监听器到后端网络端点的 HTTP 请求的路由行为。
 对于服务后端，实现可以将后端网络端点表示为服务 IP 或服务的支持 EndpointSlices。
 HTTPRoute 表示将被应用到下层 Gateway 实现的配置。
@@ -298,7 +294,8 @@ so gRPC traffic is guaranteed to flow properly.
 
 A typical GRPCRoute example:
 -->
-支持 GRPCRoute 的 Gateway 必须支持 HTTP/2，且无需从 HTTP/1 升级，以确保 gRPC 流量能够正常传输。
+支持 GRPCRoute 的 Gateway 必须支持 HTTP/2，且无需从 HTTP/1 升级，
+以确保 gRPC 流量能够正常传输。
 
 以下是一个典型的 GRPCRoute 示例：
 
@@ -355,7 +352,7 @@ to forward the traffic to the correct backend. Since there is only one match spe
 for the com.example.User.Login method to svc.example.com will be forwarded.
 RPCs of any other method` will not be matched by this Route.
 
-See the [GRPCRoute](https://gateway-api.sigs.k8s.io/reference/spec/#grpcroute)
+See the [GRPCRoute](https://gateway-api.sigs.k8s.io/references/spec/#grpcroute)
 reference for a full definition of this API kind.
 -->
 在这种情况下，GRPCRoute 将匹配发往 `svc.example.com` 的所有流量，
@@ -364,7 +361,7 @@ reference for a full definition of this API kind.
 其他请求方法的 RPC 调用都不会被此路由匹配。
 
 有关这种 API 类别的完整定义，请参阅
-[GRPCRoute](https://gateway-api.sigs.k8s.io/reference/spec/#grpcroute) 参考文档。
+[GRPCRoute](https://gateway-api.sigs.k8s.io/references/spec/#grpcroute) 参考文档。
 
 <!-- 
 ## Request flow
@@ -453,9 +450,10 @@ you quickly start working with Gateway API.
 -->
 Gateway API 资源不是由 Kubernetes 原生实现的，
 而是被定义为受广泛[实现](https://gateway-api.sigs.k8s.io/implementations/)支持的[自定义资源](/zh-cn/docs/concepts/extend-kubernetes/api-extension/custom-resources/)。
-用户需要[安装](https://gateway-api.sigs.k8s.io/guides/#installing-gateway-api) Gateway API CRD
-或按照所选实现的安装说明进行操作。
-安装完成后，使用[入门](https://gateway-api.sigs.k8s.io/guides/)指南来帮助你快速开始使用 Gateway API。
+用户需要[安装](https://gateway-api.sigs.k8s.io/guides/#installing-gateway-api)
+Gateway API CRD 或按照所选实现的安装说明进行操作。
+安装完成后，使用[入门](https://gateway-api.sigs.k8s.io/guides/)指南来帮助你快速开始使用
+Gateway API。
 
 {{< note >}}
 <!-- 
@@ -465,7 +463,8 @@ Make sure to review the documentation of your selected implementation to underst
 {{< /note >}}
 
 <!-- 
-Refer to the [API specification](https://gateway-api.sigs.k8s.io/reference/spec/) for additional
+Refer to the [API specification](https://gateway-api.sigs.k8s.io/reference/api-spec/main/spec/) for additional
 details of all Gateway API kinds.
 -->
-有关所有 Gateway API 类型的其他详细信息，请参阅 [API 规范](https://gateway-api.sigs.k8s.io/reference/spec/)。
+有关所有 Gateway API 类型的其他详细信息，请参阅
+[API 规范](https://gateway-api.sigs.k8s.io/reference/api-spec/main/spec/)。
