@@ -26,11 +26,9 @@ This page provides hints on diagnosing DNS problems.
 
 <!-- 
 Your cluster must be configured to use the CoreDNS
-{{< glossary_tooltip text="addon" term_id="addons" >}} or its precursor,
-kube-dns.  
+{{< glossary_tooltip text="addon" term_id="addons" >}}.  
 -->
-你的集群必须使用了 CoreDNS {{< glossary_tooltip text="插件" term_id="addons" >}}
-或者其前身，`kube-dns`。
+你的集群必须使用了 CoreDNS {{< glossary_tooltip text="插件" term_id="addons" >}}。
 
 {{< version-check >}}
 
@@ -138,10 +136,10 @@ options ndots:5
 ```
 
 <!--
-Errors such as the following indicate a problem with the CoreDNS (or kube-dns)
+Errors such as the following indicate a problem with the CoreDNS
 add-on or with associated Services:
 -->
-下列错误表示 CoreDNS （或 kube-dns）插件或者相关服务出现了问题：
+下列错误表示 CoreDNS 插件或者相关服务出现了问题：
 
 ```shell
 kubectl exec -i -t dnsutils -- nslookup kubernetes.default
@@ -199,9 +197,10 @@ coredns-7b96bf9f76-mvmmt   1/1       Running   0           1h
 
 {{< note >}}
 <!--
-The value for label `k8s-app` is `kube-dns` for both CoreDNS and kube-dns deployments.
+The value for label `k8s-app` for CoreDNS is `kube-dns`, for backward
+compatibility with the original kube-dns.
 -->
-对于 CoreDNS 和 kube-dns 部署而言，标签 `k8s-app` 的值都应该是 `kube-dns`。
+对于 CoreDNS，标签 `k8s-app` 的值应该是 `kube-dns`。
 {{< /note >}}
 
 <!--
@@ -209,7 +208,7 @@ If you see that no CoreDNS Pod is running or that the Pod has failed/completed,
 the DNS add-on may not be deployed by default in your current environment and you
 will have to deploy it manually.
 -->
-如果你发现没有 CoreDNS Pod 在运行，或者该 Pod 的状态是 failed 或者 completed，
+如果你发现没有 CoreDNS Pod 在运行，或者该 Pod 的状态是 `failed` 或者 `completed`，
 那可能这个 DNS 插件在你当前的环境里并没有成功部署，你将需要手动去部署它。
 
 <!--
@@ -254,9 +253,9 @@ See if there are any suspicious or unexpected messages in the logs.
 
 Verify that the DNS service is up by using the `kubectl get service` command.
 -->
-### 检查是否启用了 DNS 服务   {#is-dns-service-up}
+### 检查是否启用了 DNS Service   {#is-dns-service-up}
 
-使用 `kubectl get service` 命令来检查 DNS 服务是否已经启用。
+使用 `kubectl get service` 命令来检查 DNS Service 是否已经启用。
 
 ```shell
 kubectl get svc --namespace=kube-system
@@ -273,9 +272,10 @@ kube-dns     ClusterIP   10.0.0.10      <none>        53/UDP,53/TCP        1h
 
 {{< note >}}
 <!--
-The service name is `kube-dns` for both CoreDNS and kube-dns deployments.
+The Service for CoreDNS is named `kube-dns`, for backward compatibility with the
+original kube-dns.
 -->
-不管是 CoreDNS 还是 kube-dns，这个 Service 的名字都会是 `kube-dns`。
+对于 CoreDNS，这个 Service 的名字是 `kube-dns`。
 {{< /note >}}
 
 <!--
@@ -284,8 +284,8 @@ but it does not appear, see
 [debugging Services](/docs/tasks/debug/debug-application/debug-service/) for
 more information.
 -->
-如果你已经创建了 DNS 服务，或者该服务应该是默认自动创建的但是它并没有出现，
-请阅读[调试服务](/zh-cn/docs/tasks/debug/debug-application/debug-service/)来获取更多信息。
+如果你已经创建了 DNS Service，或者该 Service 应该是默认自动创建的但是它并没有出现，
+请阅读[调试 Service](/zh-cn/docs/tasks/debug/debug-application/debug-service/)来获取更多信息。
 
 <!--
 ### Are DNS endpoints exposed?
@@ -303,7 +303,7 @@ kubectl get endpointslice -l kubernetes.io/service-name=kube-dns --namespace=kub
 
 ```
 NAME             ADDRESSTYPE   PORTS   ENDPOINTS                  AGE
-kube-dns-zxoja   IPv4          53      10.180.3.17,10.180.3.17    1h
+coredns-zxoja    IPv4          53      10.180.3.17,10.180.3.17    1h
 ```
 
 <!--
@@ -398,8 +398,9 @@ Sample error message:
 -->
 ### CoreDNS 是否有足够的权限？   {#does-coredns-have-sufficient-permissions}
 
-CoreDNS 必须能够列出 {{< glossary_tooltip text="service" term_id="service" >}} 和
-{{< glossary_tooltip text="endpointslice" term_id="endpoint-slice" >}} 相关的资源来正确解析服务名称。
+CoreDNS 必须能够列出 {{< glossary_tooltip text="Service" term_id="service" >}} 和
+{{< glossary_tooltip text="endpointslice" term_id="endpoint-slice" >}}
+相关的资源来正确解析服务名称。
 
 示例错误消息：
 

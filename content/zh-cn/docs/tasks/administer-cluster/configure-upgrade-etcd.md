@@ -42,7 +42,8 @@ Key details include:
 
 * 在生产环境中运行的 etcd 最低推荐版本为 `3.4.29+` 和 `3.5.11+`。
 
-* etcd 是一个基于主节点（Leader-Based）的分布式系统。确保主节点定期向所有从节点发送心跳，以保持集群稳定。
+* etcd 是一个基于主节点（Leader-Based）的分布式系统。确保主节点定期向所有从节点发送心跳，
+  以保持集群稳定。
 
 * 你运行的 etcd 集群成员个数应为奇数。
 
@@ -90,7 +91,8 @@ Depending on which specific outcome you're working on, you will need the `etcdct
 
 ### 工具   {#tools}
 
-根据你想要达成的具体结果，你将需要安装 `etcdctl` 工具或 `etcdutl` 工具（可能两个工具都需要）。
+根据你想要达成的具体结果，你将需要安装 `etcdctl` 工具或 `etcdutl`
+工具（可能两个工具都需要）。
 
 <!-- steps -->
 
@@ -534,7 +536,8 @@ that is not currently used by an etcd process. Creating the snapshot will
 not affect the performance of the member.
 -->
 etcd 支持内置快照。快照可以从使用 `etcdctl snapshot save` 命令的活动成员中创建，
-也可以通过从目前没有被 etcd 进程使用的 etcd [数据目录](https://etcd.io/docs/current/op-guide/configuration/#--data-dir)
+也可以通过从目前没有被 etcd 进程使用的 etcd
+[数据目录](https://etcd.io/docs/current/op-guide/configuration/#--data-dir)
 中拷贝 `member/snap/db` 文件。创建快照并不会影响 etcd 成员的性能。
 
 <!--
@@ -590,7 +593,7 @@ Use etcdctl (Deprecated)
    The usage of `etcdctl snapshot status` has been **deprecated** since etcd v3.5.x and is slated for removal from etcd v3.6.
    It is recommended to utilize [`etcdutl`](https://github.com/etcd-io/etcd/blob/main/etcdutl/README.md) instead.
    -->
-   自 etcd v3.5.x 起，`etcdctl snapshot status` 的使用已被 **弃用**，
+   自 etcd v3.5.x 起，`etcdctl snapshot status` 的使用已被**弃用**，
    并计划在 etcd v3.6 中移除。建议改用 [`etcdutl`](https://github.com/etcd-io/etcd/blob/main/etcdutl/README.md)。
    {{< /note >}}
 
@@ -729,8 +732,8 @@ the [major.minor](https://semver.org/) version. Restoring a version from a
 different patch version of etcd is also supported. A restore operation is
 employed to recover the data of a failed cluster.
 -->
-etcd 支持从 [major.minor](https://semver.org/) 或其他不同 patch 版本的 etcd 进程中获取的快照进行恢复。
-还原操作用于恢复失败的集群的数据。
+etcd 支持从 [major.minor](https://semver.org/) 或其他不同 patch
+版本的 etcd 进程中获取的快照进行恢复。还原操作用于恢复失败的集群的数据。
 
 <!--
 Before starting the restore operation, a snapshot file must be present. It can
@@ -784,14 +787,15 @@ either be a snapshot file from a previous backup operation, or from a remaining
    <!--
    If `<data-dir-location>` is the same folder as before, delete it and stop the etcd process before restoring the cluster. 
    Otherwise, change etcd configuration and restart the etcd process after restoration to have it use the new data directory:
-   first change  `/etc/kubernetes/manifests/etcd.yaml`'s `volumes.hostPath.path` for `name: etcd-data`  to `<data-dir-location>`,
+   first change `/etc/kubernetes/manifests/etcd.yaml`'s `volumes.hostPath.path` for `name: etcd-data`  to `<data-dir-location>`,
    then execute `kubectl -n kube-system delete pod <name-of-etcd-pod>` or `systemctl restart kubelet.service` (or both).
    -->
    如果 `<data-dir-location>` 与之前的文件夹相同，请先删除此文件夹并停止 etcd 进程，再恢复集群。
    否则，在恢复后更改 etcd 配置并重启 etcd 进程将使用新的数据目录：
    首先将 `/etc/kubernetes/manifests/etcd.yaml` 中 `name: etcd-data` 对应条目的
    `volumes.hostPath.path` 改为 `<data-dir-location>`，
-   然后执行 `kubectl -n kube-system delete pod <name-of-etcd-pod>` 或 `systemctl restart kubelet.service`（或两段命令都执行）。
+   然后执行 `kubectl -n kube-system delete pod <name-of-etcd-pod>` 或
+   `systemctl restart kubelet.service`（或两段命令都执行）。
 
 {{% /tab %}}
 {{< /tabs >}}
@@ -818,7 +822,8 @@ The below example depicts the usage of the `etcdctl` tool for the restore operat
 <!--
 The usage of `etcdctl` for restoring has been deprecated since etcd v3.5.x and may be removed from a future etcd release.
 -->
-自 etcd v3.5.x 版本起，使用 `etcdctl` 进行恢复的功能已被弃用，未来的可能会在 etcd 版本中被移除。
+自 etcd v3.5.x 版本起，使用 `etcdctl` 进行恢复的功能已被弃用，未来的可能会在
+etcd 版本中被移除。
 {{< /note >}}
 
 ```shell
@@ -861,7 +866,8 @@ current state. Although the scheduled pods might continue to run, no new pods
 can be scheduled. In such cases, recover the etcd cluster and potentially
 reconfigure Kubernetes API servers to fix the issue.
 -->
-如果大多数 etcd 成员永久失败，则认为 etcd 集群失败。在这种情况下，Kubernetes 不能对其当前状态进行任何更改。
+如果大多数 etcd 成员永久失败，则认为 etcd 集群失败。在这种情况下，
+Kubernetes 不能对其当前状态进行任何更改。
 虽然已调度的 Pod 可能继续运行，但新的 Pod 无法调度。在这种情况下，
 恢复 etcd 集群并可能需要重新配置 Kubernetes API 服务器以修复问题。
 
@@ -883,13 +889,48 @@ For details on etcd upgrade, refer to the [etcd upgrades](https://etcd.io/docs/l
 有关 etcd 升级的细节，请参阅 [etcd 升级](https://etcd.io/docs/latest/upgrades/)文档。
 
 <!--
+## Streaming reads from etcd
+-->
+## 从 etcd 流式读取
+
+{{< feature-state feature_gate_name="EtcdRangeStream" >}}
+
+<!--
+With the `EtcdRangeStream` feature gate enabled and etcd v3.7 or later, the API server
+reads large collections from etcd as a stream instead of in pages, which lowers peak
+memory use on both sides. If the backend does not implement the `RangeStream` RPC, the
+API server detects the gRPC `Unimplemented` response and falls back to paginated reads.
+If your etcd-compatible backend or proxy does not fall back cleanly, disable the gate
+with `--feature-gates=EtcdRangeStream=false`.
+-->
+启用 `EtcdRangeStream` 特性门控并使用 etcd v3.7 或更高版本后，
+API 服务器会以流式方式从 etcd 读取大量集合，而非分页方式，
+从而降低 API 服务器与 etcd 两侧的峰值内存使用。
+如果后端未实现 `RangeStream` 远程过程调用（RPC），API
+服务器会检测到 gRPC 的 `Unimplemented` 响应，并回退到分页读取。
+如果你使用的 etcd 兼容后端或代理无法正常回退，可使用
+`--feature-gates=EtcdRangeStream=false` 禁用此特性门控。
+
+{{< note >}}
+<!--
+Streamed reads are recorded as `operation="listStream"` in the
+`etcd_request_duration_seconds` metric. Update any dashboard or alert that matches
+`operation="list"`.
+-->
+流式读取会在 `etcd_request_duration_seconds` 指标中以
+`operation="listStream"` 记录。请更新任何匹配 `operation="list"`
+的仪表板或告警。
+{{< /note >}}
+
+<!--
 ## Maintaining etcd clusters
 
 For more details on etcd maintenance, please refer to the [etcd maintenance](https://etcd.io/docs/latest/op-guide/maintenance/) documentation.
 -->
 ## 维护 etcd 集群    {#maintaining-etcd-clusters}
 
-有关 etcd 维护的更多详细信息，请参阅 [etcd 维护](https://etcd.io/docs/latest/op-guide/maintenance/)文档。
+有关 etcd 维护的更多详细信息，请参阅
+[etcd 维护](https://etcd.io/docs/latest/op-guide/maintenance/)文档。
 
 <!--
 ### Cluster defragmentation
